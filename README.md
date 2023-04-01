@@ -16,7 +16,6 @@ In your project's `build.gradle.kts` file, add the following dependencies:
 ```kotlin
 dependencies {
     implementation("com.google.protobuf:protobuf-java:3.22.2")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.2")
     implementation("io.grpc:grpc-stub:1.54.0")
     implementation("io.grpc:grpc-kotlin-stub:1.3.0")
 }
