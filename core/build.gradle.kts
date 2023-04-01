@@ -20,7 +20,7 @@ publishing {
             pom {
                 name.set("krotoDC core library")
                 artifactId = "krotoDC-core"
-                description.set("provides krotoDC based stubs and extensions for gRPC development")
+                description.set("provides runtime support for krotoDC generated code")
             }
         }
     }

@@ -27,9 +27,9 @@ dependencies {
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
     implementation(project(":core"))
+    testImplementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
 
     testImplementation("javax.annotation:javax.annotation-api:1.3.2")
-    testImplementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
@@ -44,8 +44,8 @@ publishing {
                 name.set("krotoDC")
                 artifactId = "protoc-gen-krotoDC"
                 description.set(
-                    "krotoDC is a library for generating kotlin data classes and " +
-                        "grpc service/stub wrapppers from a protobuf file."
+                    "protoc-gen-krotoDC is a protoc plugin for generating kotlin data classes and " +
+                        "grpc service/stub from a .proto input."
                 )
             }
 
