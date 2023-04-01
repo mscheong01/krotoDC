@@ -60,4 +60,4 @@ Contributions are welcome! Please see our [contributing guidelines](https://gith
 
 ## License
 
-This project is licensed under the [MIT License](https://github.com/mscheong01/krotoDC/blob/main/LICENSE).
+This project is licensed under the [Apache 2.0 License](https://github.com/mscheong01/krotoDC/blob/main/LICENSE).
