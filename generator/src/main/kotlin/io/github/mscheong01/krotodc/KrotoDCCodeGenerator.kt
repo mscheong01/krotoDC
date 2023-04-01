@@ -30,7 +30,7 @@ object KrotoDCCodeGenerator {
         ConverterGenerator()
     )
 
-    fun generateCode(request: PluginProtos.CodeGeneratorRequest): PluginProtos.CodeGeneratorResponse {
+    fun generateCode(request: PluginProtos.CodeGeneratorRequest) {
         val fileNameToDescriptor = mutableMapOf<String, Descriptors.FileDescriptor>()
         request.protoFileList.toList()
             .forEach { file ->
@@ -42,17 +42,17 @@ object KrotoDCCodeGenerator {
                     Descriptors.FileDescriptor.buildFrom(file, deps.toTypedArray())
             }
 
-        val responseBuilder = PluginProtos.CodeGeneratorResponse.newBuilder()
-            .setSupportedFeatures(PluginProtos.CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE.toLong())
         fileNameToDescriptor.filterNot { (fileName, _) ->
             fileName.startsWith("google/")
         }.forEach { (_, descriptor) ->
+            val responseBuilder = PluginProtos.CodeGeneratorResponse.newBuilder()
+                .setSupportedFeatures(PluginProtos.CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE.toLong())
             responseBuilder.addAllFile(
                 subGenerators.map { it.generate(descriptor) }.flatten()
                     .let { kotlinPoetFileSpecToCodeGeneratorResponseFile(it) }
-            )
+            ).build()
+                .let { it.writeTo(System.out) }
         }
-        return responseBuilder.build()
     }
 
     fun kotlinPoetFileSpecToCodeGeneratorResponseFile(

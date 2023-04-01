@@ -24,11 +24,10 @@ object MainExecutor {
         } catch (e: Throwable) {
             throw IOException("Error occurred while parsing CodeGeneratorRequest for krotoDC", e)
         }
-        val response = try {
+        try {
             KrotoDCCodeGenerator.generateCode(request)
         } catch (e: Throwable) {
             throw IOException("Error occurred while generating code through krotoDC", e)
         }
-        response.writeTo(System.out)
     }
 }
