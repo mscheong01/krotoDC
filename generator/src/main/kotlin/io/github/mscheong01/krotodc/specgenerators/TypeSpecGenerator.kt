@@ -11,19 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-syntax = "proto3";
+package io.github.mscheong01.krotodc.specgenerators
 
-import "google/protobuf/wrappers.proto";
-import "test.proto";
+import io.github.mscheong01.krotodc.import.TypeSpecsWithImports
 
-package com.example.importtest;
-
-option java_package = "io.github.mscheong01.importtest";
-
-
-message ImportTestMessage {
-    // import TopLevelMessage.NestedMessage
-    com.example.test.TopLevelMessage.NestedMessage imported_nested_message = 1;
-    // import Person
-    com.example.test.Person imported_person = 2;
+interface TypeSpecGenerator<Descriptor> {
+    fun generate(descriptor: Descriptor): TypeSpecsWithImports
 }

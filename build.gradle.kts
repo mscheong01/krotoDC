@@ -5,7 +5,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
 }
 
-group = "com.github.mscheong01"
+group = "io.github.mscheong01"
 if (project.hasProperty("releaseVersion")) {
     version = project.property("releaseVersion") as String
 }

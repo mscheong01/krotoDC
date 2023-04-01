@@ -22,7 +22,7 @@ import "google/protobuf/empty.proto";
 
 package com.example.wellknowntypes;
 
-option java_package = "com.github.mscheong01.wellknowntypes";
+option java_package = "io.github.mscheong01.wellknowntypes";
 option java_multiple_files = true;
 
 message MessageWithEmpty {

@@ -11,19 +11,15 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-syntax = "proto3";
+package io.github.mscheong01.krotodc.import
 
-import "google/protobuf/wrappers.proto";
-import "test.proto";
+import com.squareup.kotlinpoet.TypeSpec
 
-package com.example.importtest;
-
-option java_package = "io.github.mscheong01.importtest";
-
-
-message ImportTestMessage {
-    // import TopLevelMessage.NestedMessage
-    com.example.test.TopLevelMessage.NestedMessage imported_nested_message = 1;
-    // import Person
-    com.example.test.Person imported_person = 2;
+data class TypeSpecsWithImports(
+    val typeSpecs: List<TypeSpec>,
+    val imports: Set<Import>
+) {
+    companion object {
+        val EMPTY = TypeSpecsWithImports(emptyList(), emptySet())
+    }
 }

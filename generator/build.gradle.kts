@@ -5,7 +5,7 @@ plugins {
 }
 
 application {
-    mainClass.set("com.github.mscheong01.krotodc.MainExecutor")
+    mainClass.set("io.github.mscheong01.krotodc.MainExecutor")
 }
 
 dependencies {

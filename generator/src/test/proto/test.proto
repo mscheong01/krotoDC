@@ -15,7 +15,7 @@ syntax = "proto3";
 
 package com.example.test;
 
-option java_package = "com.github.mscheong01.test";
+option java_package = "io.github.mscheong01.test";
 option java_multiple_files = true;
 
 message Person {

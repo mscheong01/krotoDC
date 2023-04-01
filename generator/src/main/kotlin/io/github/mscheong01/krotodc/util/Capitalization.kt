@@ -11,19 +11,11 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-syntax = "proto3";
+package io.github.mscheong01.krotodc.util
 
-import "google/protobuf/wrappers.proto";
-import "test.proto";
-
-package com.example.importtest;
-
-option java_package = "io.github.mscheong01.importtest";
-
-
-message ImportTestMessage {
-    // import TopLevelMessage.NestedMessage
-    com.example.test.TopLevelMessage.NestedMessage imported_nested_message = 1;
-    // import Person
-    com.example.test.Person imported_person = 2;
+fun String.capitalize(): String {
+    return this.replaceFirstChar { it.uppercase() }
+}
+fun String.decapitalize(): String {
+    return this.replaceFirstChar { it.lowercase() }
 }

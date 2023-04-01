@@ -37,7 +37,7 @@ protobuf {
             artifact = "io.grpc:protoc-gen-grpc-java:1.54.0"
         }
         id("krotoDC") {
-            artifact = "com.github.mscheong01.krotodc:protoc-gen-krotoDC:1.0.0-SNAPSHOT:jdk8@jar"
+            artifact = "io.github.mscheong01.krotodc:protoc-gen-krotoDC:1.0.0-SNAPSHOT:jdk8@jar"
         }
     }
     generateProtoTasks {

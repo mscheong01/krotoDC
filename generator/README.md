@@ -11,7 +11,7 @@ message Person {
 ```
 will be generated as:
 ```kotlin
-@KrotoDC(forProto = com.github.mscheong01.test.Person::class)
+@KrotoDC(forProto = io.github.mscheong01.test.Person::class)
 public data class Person(
     public val name: String = "",
     public val age: Int = 0,
@@ -34,7 +34,7 @@ message OptionalMessage {
 ```
 will be generated as:
 ```kotlin
-@KrotoDC(forProto = com.github.mscheong01.test.OptionalMessage::class)
+@KrotoDC(forProto = io.github.mscheong01.test.OptionalMessage::class)
 public data class OptionalMessage(
   public val optionalString: String? = null,
   public val optionalInt: Int? = null,
@@ -58,7 +58,7 @@ message OneOfMessage {
 ```
 will be generated as:
 ```kotlin
-@KrotoDC(forProto = com.github.mscheong01.test.OneOfMessage::class)
+@KrotoDC(forProto = io.github.mscheong01.test.OneOfMessage::class)
 public data class OneOfMessage(
   public val oneofField: OneofField? = null,
 ) {
@@ -72,7 +72,7 @@ public data class OneOfMessage(
     ) : OneofField
 
     public data class OneofPerson(
-      public val oneofPerson: Person = com.github.mscheong01.test.krotodc.Person(),
+      public val oneofPerson: Person = io.github.mscheong01.test.krotodc.Person(),
     ) : OneofField
   }
 }
@@ -110,25 +110,25 @@ ex) generate `OptionalMessage` converters:
 PersonConverters.kt
 ```kotlin
 /**
- * Converts [Person] to [com.github.mscheong01.test.krotodc.Person]
+ * Converts [Person] to [io.github.mscheong01.test.krotodc.Person]
  */
 @KrotoDCConverter(
     from = Person::class,
-    to = com.github.mscheong01.test.krotodc.Person::class,
+    to = io.github.mscheong01.test.krotodc.Person::class,
 )
-public fun Person.toDataClass(): com.github.mscheong01.test.krotodc.Person =
-    com.github.mscheong01.test.krotodc.Person(name = name,
+public fun Person.toDataClass(): io.github.mscheong01.test.krotodc.Person =
+    io.github.mscheong01.test.krotodc.Person(name = name,
         age = age,
     )
 
 /**
- * Converts [com.github.mscheong01.test.krotodc.Person] to [Person]
+ * Converts [io.github.mscheong01.test.krotodc.Person] to [Person]
  */
 @KrotoDCConverter(
-    from = com.github.mscheong01.test.krotodc.Person::class,
+    from = io.github.mscheong01.test.krotodc.Person::class,
     to = Person::class,
 )
-public fun com.github.mscheong01.test.krotodc.Person.toProto(): Person = Person.newBuilder()
+public fun io.github.mscheong01.test.krotodc.Person.toProto(): Person = Person.newBuilder()
     .apply {
         setName(this@toProto.name)
         setAge(this@toProto.age)
