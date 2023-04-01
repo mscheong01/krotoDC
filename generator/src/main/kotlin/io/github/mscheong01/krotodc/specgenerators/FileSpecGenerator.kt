@@ -13,14 +13,12 @@
 // limitations under the License.
 package io.github.mscheong01.krotodc.specgenerators
 
-import com.google.protobuf.Descriptors
+import com.google.protobuf.Descriptors.FileDescriptor
 import com.squareup.kotlinpoet.FileSpec
 
 /**
  * SubGenerators are responsible for generating part of krotoDC's output.
  */
 interface FileSpecGenerator {
-    fun generate(
-        fileNameToDescriptor: Map<String, Descriptors.FileDescriptor>
-    ): List<FileSpec>
+    fun generate(fileDescriptor: FileDescriptor): List<FileSpec>
 }

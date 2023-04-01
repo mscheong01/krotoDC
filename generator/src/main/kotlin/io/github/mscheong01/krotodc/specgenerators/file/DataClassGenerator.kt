@@ -15,6 +15,7 @@ package io.github.mscheong01.krotodc.specgenerators.file
 
 import com.google.protobuf.Descriptors
 import com.google.protobuf.Descriptors.Descriptor
+import com.google.protobuf.Descriptors.FileDescriptor
 import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.BOOLEAN
 import com.squareup.kotlinpoet.ClassName
@@ -53,21 +54,17 @@ import io.github.mscheong01.krotodc.util.simpleNames
 
 class DataClassGenerator : FileSpecGenerator {
 
-    val fileSpecs = mutableMapOf<String, FileSpec>()
-
-    override fun generate(fileNameToDescriptor: Map<String, Descriptors.FileDescriptor>): List<FileSpec> {
-        for ((_, descriptor) in fileNameToDescriptor) {
-            for (messageType in descriptor.messageTypes) {
-                val fileSpecBuilder = FileSpec.builder(descriptor.krotoDCPackage, messageType.name + ".kt")
-                val specsWithImports = generateTypeSpecForMessageDescriptor(messageType)
-                specsWithImports.typeSpecs.forEach { fileSpecBuilder.addType(it) }
-                fileSpecBuilder.addAllImports(specsWithImports.imports)
-                if (fileSpecBuilder.members.isNotEmpty()) {
-                    fileSpecs[messageType.fullName] = fileSpecBuilder.build()
-                }
+    override fun generate(fileDescriptor: FileDescriptor): List<FileSpec> {
+        val fileSpecs = mutableMapOf<String, FileSpec>()
+        for (messageType in fileDescriptor.messageTypes) {
+            val fileSpecBuilder = FileSpec.builder(fileDescriptor.krotoDCPackage, messageType.name + ".kt")
+            val specsWithImports = generateTypeSpecForMessageDescriptor(messageType)
+            specsWithImports.typeSpecs.forEach { fileSpecBuilder.addType(it) }
+            fileSpecBuilder.addAllImports(specsWithImports.imports)
+            if (fileSpecBuilder.members.isNotEmpty()) {
+                fileSpecs[messageType.fullName] = fileSpecBuilder.build()
             }
         }
-
         return fileSpecs.values.toList()
     }
 

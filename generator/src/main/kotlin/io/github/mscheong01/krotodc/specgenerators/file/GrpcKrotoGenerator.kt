@@ -25,47 +25,44 @@ import io.github.mscheong01.krotodc.util.addAllImports
 import io.github.mscheong01.krotodc.util.krotoDCPackage
 
 class GrpcKrotoGenerator : FileSpecGenerator {
-    override fun generate(fileNameToDescriptor: Map<String, Descriptors.FileDescriptor>): List<FileSpec> {
+    override fun generate(fileDescriptor: Descriptors.FileDescriptor): List<FileSpec> {
         val fileSpecs = mutableListOf<FileSpec>()
-
-        fileNameToDescriptor.forEach { (_, descriptor) ->
-            descriptor.services.forEach { service ->
-                val generators: List<TypeSpecGenerator<ServiceDescriptor>> = listOf(
-                    ServiceImplBaseGenerator(),
-                    ClientStubGenerator()
-                )
-                val results = generators.map {
-                    it.generate(service)
-                }
-                val krotoGrpcClassName = service.name + "GrpcKroto"
-                fileSpecs.add(
-                    FileSpec.builder(descriptor.krotoDCPackage, krotoGrpcClassName + ".kt")
-                        .addType(
-                            TypeSpec.objectBuilder(krotoGrpcClassName)
-                                .apply {
-                                    results.map {
-                                        it.typeSpecs
-                                    }.flatten().forEach {
-                                        addType(it)
-                                    }
-                                }.build()
-                        ).apply {
-                            if (
-                                service.methods.any {
-                                    it.isServerStreaming || it.isClientStreaming
-                                }
-                            ) {
-                                addImport("kotlinx.coroutines.flow", "map")
-                            }
-                            addAllImports(
-                                results.map {
-                                    it.imports
-                                }.flatten().toSet()
-                            )
-                        }
-                        .build()
-                )
+        fileDescriptor.services.forEach { service ->
+            val generators: List<TypeSpecGenerator<ServiceDescriptor>> = listOf(
+                ServiceImplBaseGenerator(),
+                ClientStubGenerator()
+            )
+            val results = generators.map {
+                it.generate(service)
             }
+            val krotoGrpcClassName = service.name + "GrpcKroto"
+            fileSpecs.add(
+                FileSpec.builder(fileDescriptor.krotoDCPackage, krotoGrpcClassName + ".kt")
+                    .addType(
+                        TypeSpec.objectBuilder(krotoGrpcClassName)
+                            .apply {
+                                results.map {
+                                    it.typeSpecs
+                                }.flatten().forEach {
+                                    addType(it)
+                                }
+                            }.build()
+                    ).apply {
+                        if (
+                            service.methods.any {
+                                it.isServerStreaming || it.isClientStreaming
+                            }
+                        ) {
+                            addImport("kotlinx.coroutines.flow", "map")
+                        }
+                        addAllImports(
+                            results.map {
+                                it.imports
+                            }.flatten().toSet()
+                        )
+                    }
+                    .build()
+            )
         }
 
         return fileSpecs

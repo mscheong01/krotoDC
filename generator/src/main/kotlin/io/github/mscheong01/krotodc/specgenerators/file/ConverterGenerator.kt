@@ -26,21 +26,20 @@ import io.github.mscheong01.krotodc.util.isPredefinedType
 import io.github.mscheong01.krotodc.util.krotoDCPackage
 
 class ConverterGenerator : FileSpecGenerator {
-    val fileSpecs = mutableMapOf<String, FileSpec>()
+
     val messageToDataClassGenerator = MessageToDataClassFunctionGenerator()
     val messageToProtoGenerator = MessageToProtoFunctionGenerator()
 
-    override fun generate(fileNameToDescriptor: Map<String, Descriptors.FileDescriptor>): List<FileSpec> {
-        for ((_, descriptor) in fileNameToDescriptor) {
-            for (messageType in descriptor.messageTypes) {
-                val packageValue = messageType.file.krotoDCPackage + '.' + messageType.name.lowercase()
-                val fileBuilder = FileSpec
-                    .builder(packageValue, "${messageType.name}Converters.kt")
-                val (funSpecs, imports) = generateConvertersForMessageDescriptor(messageType)
-                funSpecs.forEach { fileBuilder.addFunction(it) }
-                fileBuilder.addAllImports(imports)
-                fileSpecs[messageType.fullName] = fileBuilder.build()
-            }
+    override fun generate(fileDescriptor: Descriptors.FileDescriptor): List<FileSpec> {
+        val fileSpecs = mutableMapOf<String, FileSpec>()
+        for (messageType in fileDescriptor.messageTypes) {
+            val packageValue = messageType.file.krotoDCPackage + '.' + messageType.name.lowercase()
+            val fileBuilder = FileSpec
+                .builder(packageValue, "${messageType.name}Converters.kt")
+            val (funSpecs, imports) = generateConvertersForMessageDescriptor(messageType)
+            funSpecs.forEach { fileBuilder.addFunction(it) }
+            fileBuilder.addAllImports(imports)
+            fileSpecs[messageType.fullName] = fileBuilder.build()
         }
         return fileSpecs.values.toList()
     }

@@ -42,12 +42,17 @@ object KrotoDCCodeGenerator {
                     Descriptors.FileDescriptor.buildFrom(file, deps.toTypedArray())
             }
 
-        val generatedFileSpecs = generateFilesFromDescriptors(fileNameToDescriptor)
-
-        return PluginProtos.CodeGeneratorResponse.newBuilder().apply {
-            this.setSupportedFeatures(PluginProtos.CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE.toLong())
-                .addAllFile(kotlinPoetFileSpecToCodeGeneratorResponseFile(generatedFileSpecs))
-        }.build()
+        val responseBuilder = PluginProtos.CodeGeneratorResponse.newBuilder()
+            .setSupportedFeatures(PluginProtos.CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE.toLong())
+        fileNameToDescriptor.filterNot { (fileName, _) ->
+            fileName.startsWith("google/")
+        }.forEach { (_, descriptor) ->
+            responseBuilder.addAllFile(
+                subGenerators.map { it.generate(descriptor) }.flatten()
+                    .let { kotlinPoetFileSpecToCodeGeneratorResponseFile(it) }
+            )
+        }
+        return responseBuilder.build()
     }
 
     fun kotlinPoetFileSpecToCodeGeneratorResponseFile(
@@ -59,17 +64,5 @@ object KrotoDCCodeGenerator {
                 it.content = fileSpec.toString()
             }.build()
         }
-    }
-
-    fun generateFilesFromDescriptors(
-        fileNameToDescriptor: Map<String, Descriptors.FileDescriptor>
-    ): List<FileSpec> {
-        return subGenerators.map {
-            it.generate(
-                fileNameToDescriptor.filterNot { (fileName, _) ->
-                    fileName.startsWith("google/")
-                }
-            )
-        }.flatten()
     }
 }
