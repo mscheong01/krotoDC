@@ -121,13 +121,14 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
             }
 
             imports.addAll(codeWithImports.imports)
-            functionBuilder.addCode(codeWithImports.code)
+            functionBuilder.addStatement("%L", codeWithImports.code)
             if (optional) {
                 functionBuilder.nextControlFlow("else")
-                functionBuilder.addCode("null")
-                functionBuilder.endControlFlow()
+                functionBuilder.addStatement("null")
+                functionBuilder.endControlFlowWithComma()
+            } else {
+                functionBuilder.addCode(", ")
             }
-            functionBuilder.addCode(",\n")
         }
 //        functionBuilder.addCode("⇤")
         functionBuilder.addCode(")")
