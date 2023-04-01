@@ -14,7 +14,7 @@ jobs:
       - name: Setup AdoptOpenJDK
         uses: joschi/setup-jdk@v2
         with:
-          java-version: '8'
+          java-version: '17'
       - name: Ktlint Check with Gradle
         working-directory: ./
         run: ./gradlew clean ktlintCheck

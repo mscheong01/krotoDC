@@ -15,7 +15,7 @@ jobs:
       - name: Setup AdoptOpenJDK
         uses: joschi/setup-jdk@v2
         with:
-          java-version: '8'
+          java-version: '17'
       - name: Build with Gradle
         working-directory: ./
         run: ./gradlew build test publish
