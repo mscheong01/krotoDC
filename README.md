@@ -5,6 +5,7 @@ krotoDC is a protoc plugin for generating Kotlin data classes and gRPC service/s
 ## Features
 
 - Generates Kotlin data classes from .proto files
+- Generates Converter extension methods between generated classes and GeneratedMessageV3 classes
 - Generates gRPC service/stub based on the service definition in .proto files
 - Supports Kotlin specific features like nullable fields and sealed oneof classes: 
 
