@@ -6,7 +6,9 @@ plugins {
 }
 
 group = "com.github.mscheong01.krotodc"
-version = "1.0.0-SNAPSHOT"
+if (project.hasProperty("releaseVersion")) {
+    version = project.property("releaseVersion") as String
+}
 
 ext["grpcJavaVersion"] = "1.54.0"
 ext["grpcKotlinVersion"] = "1.3.0"
