@@ -130,7 +130,6 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
                 functionBuilder.addCode(", ")
             }
         }
-//        functionBuilder.addCode("⇤")
         functionBuilder.addCode(")")
         functionBuilder.addKdoc(
             "Converts [%T] to [%T]",
