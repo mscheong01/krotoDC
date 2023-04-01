@@ -13,8 +13,8 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.file
 
-import com.github.mscheong01.krotodc.extensions.addAllImports
-import com.github.mscheong01.krotodc.extensions.krotoDCPackage
+import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
 import com.github.mscheong01.krotodc.specgenerators.TypeSpecGenerator
 import com.github.mscheong01.krotodc.specgenerators.type.ClientStubGenerator

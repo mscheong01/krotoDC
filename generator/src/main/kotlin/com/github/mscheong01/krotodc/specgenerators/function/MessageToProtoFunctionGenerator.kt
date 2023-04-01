@@ -14,14 +14,14 @@
 package com.github.mscheong01.krotodc.specgenerators.function
 
 import com.github.mscheong01.krotodc.KrotoDCConverter
-import com.github.mscheong01.krotodc.extensions.isHandledPreDefinedType
-import com.github.mscheong01.krotodc.extensions.isKrotoDCOptional
-import com.github.mscheong01.krotodc.extensions.isPredefinedType
-import com.github.mscheong01.krotodc.extensions.krotoDCPackage
-import com.github.mscheong01.krotodc.extensions.krotoDCTypeName
-import com.github.mscheong01.krotodc.extensions.protobufJavaTypeName
-import com.github.mscheong01.krotodc.extensions.simpleNames
-import com.github.mscheong01.krotodc.extensions.toProtoImport
+import com.github.mscheong01.krotodc.util.isHandledPreDefinedType
+import com.github.mscheong01.krotodc.util.isKrotoDCOptional
+import com.github.mscheong01.krotodc.util.isPredefinedType
+import com.github.mscheong01.krotodc.util.krotoDCPackage
+import com.github.mscheong01.krotodc.util.krotoDCTypeName
+import com.github.mscheong01.krotodc.util.protobufJavaTypeName
+import com.github.mscheong01.krotodc.util.simpleNames
+import com.github.mscheong01.krotodc.util.toProtoImport
 import com.github.mscheong01.krotodc.import.CodeWithImports
 import com.github.mscheong01.krotodc.import.FunSpecsWithImports
 import com.github.mscheong01.krotodc.import.Import

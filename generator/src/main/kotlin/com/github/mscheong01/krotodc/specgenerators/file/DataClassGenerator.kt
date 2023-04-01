@@ -14,14 +14,14 @@
 package com.github.mscheong01.krotodc.specgenerators.file
 
 import com.github.mscheong01.krotodc.KrotoDC
-import com.github.mscheong01.krotodc.extensions.addAllImports
-import com.github.mscheong01.krotodc.extensions.isHandledPreDefinedType
-import com.github.mscheong01.krotodc.extensions.isKrotoDCOptional
-import com.github.mscheong01.krotodc.extensions.isPredefinedType
-import com.github.mscheong01.krotodc.extensions.krotoDCPackage
-import com.github.mscheong01.krotodc.extensions.krotoDCTypeName
-import com.github.mscheong01.krotodc.extensions.protobufJavaTypeName
-import com.github.mscheong01.krotodc.extensions.simpleNames
+import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.isHandledPreDefinedType
+import com.github.mscheong01.krotodc.util.isKrotoDCOptional
+import com.github.mscheong01.krotodc.util.isPredefinedType
+import com.github.mscheong01.krotodc.util.krotoDCPackage
+import com.github.mscheong01.krotodc.util.krotoDCTypeName
+import com.github.mscheong01.krotodc.util.protobufJavaTypeName
+import com.github.mscheong01.krotodc.util.simpleNames
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.import.TypeSpecsWithImports
 import com.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType

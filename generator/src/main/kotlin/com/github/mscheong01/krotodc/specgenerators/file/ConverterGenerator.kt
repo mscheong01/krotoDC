@@ -13,9 +13,9 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.file
 
-import com.github.mscheong01.krotodc.extensions.addAllImports
-import com.github.mscheong01.krotodc.extensions.isPredefinedType
-import com.github.mscheong01.krotodc.extensions.krotoDCPackage
+import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.isPredefinedType
+import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.github.mscheong01.krotodc.import.FunSpecsWithImports
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator

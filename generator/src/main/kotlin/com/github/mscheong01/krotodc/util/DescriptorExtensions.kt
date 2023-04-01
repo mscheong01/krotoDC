@@ -11,13 +11,10 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-package com.github.mscheong01.krotodc.extensions
+package com.github.mscheong01.krotodc.util
 
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType
-import com.github.mscheong01.krotodc.util.GRPC_JAVA_CLASS_NAME_SUFFIX
-import com.github.mscheong01.krotodc.util.capitalize
-import com.github.mscheong01.krotodc.util.fieldNameToJsonName
 import com.google.protobuf.Descriptors
 import com.google.protobuf.Descriptors.Descriptor
 import com.google.protobuf.Descriptors.EnumDescriptor

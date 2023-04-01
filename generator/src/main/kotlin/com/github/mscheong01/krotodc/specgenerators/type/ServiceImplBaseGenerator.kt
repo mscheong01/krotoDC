@@ -13,9 +13,9 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.type
 
-import com.github.mscheong01.krotodc.extensions.descriptorCode
-import com.github.mscheong01.krotodc.extensions.grpcClass
-import com.github.mscheong01.krotodc.extensions.krotoServiceImplBaseName
+import com.github.mscheong01.krotodc.util.descriptorCode
+import com.github.mscheong01.krotodc.util.grpcClass
+import com.github.mscheong01.krotodc.util.krotoServiceImplBaseName
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.import.TypeSpecsWithImports
 import com.github.mscheong01.krotodc.specgenerators.TypeSpecGenerator
