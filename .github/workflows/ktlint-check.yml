@@ -1,0 +1,20 @@
+name: Ktlint Check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, Linux, X64, mortar-runner]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup AdoptOpenJDK
+        uses: joschi/setup-jdk@v2
+        with:
+          java-version: '8'
+      - name: Test with Gradle
+        working-directory: ./
+        run: ./gradlew clean ktlintCheck

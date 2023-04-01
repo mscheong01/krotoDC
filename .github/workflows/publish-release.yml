@@ -1,0 +1,76 @@
+name: Publish Release
+
+on:
+  release:
+    types: [ published ]
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get Previous tag
+        id: previous_tag
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get next minor version
+        id: semvers
+        uses: WyriHaximus/github-action-next-semvers@v1
+        with:
+          version: ${{ steps.previous_tag.outputs.tag }}
+
+      - name: print semver
+        id: print_semver
+        run: |
+          echo "current: $CURRENT"
+          echo "next: $NEXT"
+        env:
+          CURRENT: ${{ steps.previous_tag.outputs.tag }}
+          NEXT: ${{ steps.semvers.outputs.minor }}
+
+      - name: Setup AdoptOpenJDK
+        uses: joschi/setup-jdk@v2
+        with:
+          java-version: '8'
+
+      - name: Build and publish with Gradle
+        working-directory: ./
+        run: ./gradlew build test publish -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
+
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v2
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: '**/build/test-results/test/TEST-*.xml'
+
+      - name: Update library version
+        working-directory: ./
+        run: ./gradlew updateVersion -Pnext=${{ steps.semvers.outputs.minor }}-SNAPSHOT
+      - name: Commit gradle.properties with updated library version
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update version to ${{ steps.semvers.outputs.minor }}-SNAPSHOT
+          file_pattern: gradle.properties
+          branch: main
+          commit_user_name: version-control-bot
+          commit_user_email: version-control-botr@users.noreply.github.com
+          commit_author: version-control-bot <version-control-bot@users.noreply.github.com>
+
+      - name: Create new milestone
+        id: create_milestone
+        uses: WyriHaximus/github-action-create-milestone@v1
+        with:
+          title: ${{ steps.semvers.outputs.minor }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

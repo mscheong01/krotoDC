@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.mscheong01.krotodc</groupId>
+  <artifactId>protoc-gen-krotoDC</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>krotoDC</name>
+  <description>krotoDC is a library for generating kotlin data classes and grpc service/stub wrapppers from a protobuf file.</description>
+  <url>https://github.com/mscheong01/krotoDC</url>
+  <licenses>
+    <license>
+      <name>Apache 2.0</name>
+      <url>https://opensource.org/licenses/Apache-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>mscheong01</id>
+      <name>Minsoo Cheong</name>
+      <email>icycle0409@snu.ac.kr</email>
+      <organization>MinsooCheong</organization>
+      <organizationUrl>https://github.com/mscheong01</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:mscheong01/krotoDC.git</connection>
+    <developerConnection>scm:git:git@github.com:mscheong01/krotoDC.git</developerConnection>
+    <url>https://github.com/mscheong01/krotoDC</url>
+  </scm>
+</project>

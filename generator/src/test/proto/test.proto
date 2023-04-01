@@ -1,0 +1,109 @@
+// Copyright 2023 Minsoo Cheong
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package com.example.test;
+
+option java_package = "com.github.mscheong01.test";
+option java_multiple_files = true;
+
+message Person {
+  string name = 1;
+  int32 age = 2;
+}
+
+enum Job {
+  UNKNOWN = 0;
+  ENGINEER = 1;
+  PRODUCT_MANAGER = 2;
+}
+
+message Employee {
+  string name = 1;
+  int32 age = 2;
+  Job job = 3;
+}
+
+message TopLevelMessage {
+  string name = 1;
+  NestedMessage nested_message = 2;
+  NestedEnum nested_enum = 3;
+
+  message NestedMessage {
+    string name = 1;
+  }
+
+  enum NestedEnum {
+    DEFAULT = 0;
+    A = 1;
+    B = 2;
+  }
+}
+
+message PrimitiveMessage {
+  int32 int32_field = 1;
+  int64 int64_field = 2;
+  uint32 uint32_field = 3;
+  uint64 uint64_field = 4;
+  sint32 sint32_field = 5;
+  sint64 sint64_field = 6;
+  fixed32 fixed32_field = 7;
+  fixed64 fixed64_field = 8;
+  sfixed32 sfixed32_field = 9;
+  sfixed64 sfixed64_field = 10;
+  float float_field = 11;
+  double double_field = 12;
+  bool bool_field = 13;
+  string string_field = 14;
+  bytes bytes_field = 15;
+}
+
+message RepeatedMessage {
+  repeated string repeated_string = 1;
+  repeated Person repeated_person = 2;
+  repeated Job repeated_job = 3;
+}
+
+message MapMessage {
+  map<string, string> map_string_string = 1;
+  map<string, Person> map_string_person = 2;
+  map<int32, Job> map_int_job = 3;
+}
+
+message OptionalMessage {
+  optional string optional_string = 1;
+  optional int32 optional_int = 2;
+  optional Person optional_person = 3;
+}
+
+message OneOfMessage {
+  oneof oneof_field {
+    string oneof_string = 1;
+    int32 oneof_int = 2;
+    Person oneof_person = 3;
+  }
+}
+
+message EmptyMessage {
+
+}
+
+message DeprecatedMessage {
+  string name = 1 [deprecated = true];
+  oneof oneof_field {
+    string oneof_string = 2 [deprecated = true];
+    int32 oneof_int = 3;
+    Person oneof_person = 4;
+  }
+}

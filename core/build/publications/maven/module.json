@@ -1,0 +1,130 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "com.github.mscheong01.krotodc",
+    "module": "krotoDC-core",
+    "version": "1.0.0-SNAPSHOT",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.5.1"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "krotoDC-core-1.0.0-SNAPSHOT.jar",
+          "url": "krotoDC-core-1.0.0-SNAPSHOT.jar",
+          "size": 5278,
+          "sha512": "ecfc3d686d0c4d39a8e02f432235574e27d3c09f58f358526227dac3feb3aab5105f3a4e0adc6588ed02396ec0843095260666d25583a620925d2bc33368bf9c",
+          "sha256": "bb3e52e33cc110058df59398c5d5474c395fb733afa0556f724bab3959735ae2",
+          "sha1": "fca62288e4530c53399cb0287f5433d57dff63a6",
+          "md5": "005fbdcd20a4a85b49846e2c741d5a97"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.environment": "standard-jvm",
+        "org.gradle.jvm.version": 8,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime",
+        "org.jetbrains.kotlin.platform.type": "jvm"
+      },
+      "dependencies": [
+        {
+          "group": "com.google.protobuf",
+          "module": "protobuf-java",
+          "version": {
+            "requires": "3.22.2"
+          }
+        },
+        {
+          "group": "io.grpc",
+          "module": "grpc-stub",
+          "version": {
+            "requires": "1.54.0"
+          }
+        },
+        {
+          "group": "io.grpc",
+          "module": "grpc-kotlin-stub",
+          "version": {
+            "requires": "1.3.0"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlinx",
+          "module": "kotlinx-coroutines-core",
+          "version": {
+            "requires": "1.6.2"
+          }
+        },
+        {
+          "group": "org.jetbrains.kotlin",
+          "module": "kotlin-stdlib-jdk8",
+          "version": {
+            "requires": "1.7.20"
+          }
+        }
+      ],
+      "files": [
+        {
+          "name": "krotoDC-core-1.0.0-SNAPSHOT.jar",
+          "url": "krotoDC-core-1.0.0-SNAPSHOT.jar",
+          "size": 5278,
+          "sha512": "ecfc3d686d0c4d39a8e02f432235574e27d3c09f58f358526227dac3feb3aab5105f3a4e0adc6588ed02396ec0843095260666d25583a620925d2bc33368bf9c",
+          "sha256": "bb3e52e33cc110058df59398c5d5474c395fb733afa0556f724bab3959735ae2",
+          "sha1": "fca62288e4530c53399cb0287f5433d57dff63a6",
+          "md5": "005fbdcd20a4a85b49846e2c741d5a97"
+        }
+      ]
+    },
+    {
+      "name": "sourcesElements",
+      "attributes": {
+        "org.gradle.category": "documentation",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.docstype": "sources",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "krotoDC-core-1.0.0-SNAPSHOT-sources.jar",
+          "url": "krotoDC-core-1.0.0-SNAPSHOT-sources.jar",
+          "size": 2764,
+          "sha512": "ebd4a8e89d2384ef0e0de1e36b846c8e75bafb47d6bafee394b27944baee338ec3f764470d67fe6dd0ad268691393895d9d14a3c219c6751b945f0d23f228200",
+          "sha256": "5652e1130c2b19581565720dc04288143d8a5a2e631c4f890e941c6aa2b30bbf",
+          "sha1": "648de68b547e5d801bca57139890287e156bcbbf",
+          "md5": "7c25b282dfedb3251ddc7ad83bdcd6e8"
+        }
+      ]
+    }
+  ]
+}
