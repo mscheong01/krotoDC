@@ -79,8 +79,12 @@ subprojects {
         }
         repositories {
             maven {
-                name = "MavenCentral"
-                url = uri("https://maven.pkg.github.com/mscheong01/krotoDC")
+                name = "OSSRH"
+                url = if ((version as String).endsWith("-SNAPSHOT")) {
+                    uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+                } else {
+                    uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+                }
                 credentials {
                     username = System.getenv("MAVEN_USERNAME")
                     password = System.getenv("MAVEN_PASSWORD")
