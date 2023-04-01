@@ -13,14 +13,14 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.file
 
-import com.github.mscheong01.krotodc.util.addAllImports
-import com.github.mscheong01.krotodc.util.isPredefinedType
-import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.github.mscheong01.krotodc.import.FunSpecsWithImports
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
 import com.github.mscheong01.krotodc.specgenerators.function.MessageToDataClassFunctionGenerator
 import com.github.mscheong01.krotodc.specgenerators.function.MessageToProtoFunctionGenerator
+import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.isPredefinedType
+import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.google.protobuf.Descriptors
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec

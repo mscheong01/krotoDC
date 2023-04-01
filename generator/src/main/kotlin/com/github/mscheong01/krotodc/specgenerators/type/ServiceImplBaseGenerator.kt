@@ -13,9 +13,6 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.type
 
-import com.github.mscheong01.krotodc.util.descriptorCode
-import com.github.mscheong01.krotodc.util.grpcClass
-import com.github.mscheong01.krotodc.util.krotoServiceImplBaseName
 import com.github.mscheong01.krotodc.import.Import
 import com.github.mscheong01.krotodc.import.TypeSpecsWithImports
 import com.github.mscheong01.krotodc.specgenerators.TypeSpecGenerator
@@ -23,6 +20,9 @@ import com.github.mscheong01.krotodc.specgenerators.file.DataClassGenerator
 import com.github.mscheong01.krotodc.specgenerators.function.MessageToDataClassFunctionGenerator
 import com.github.mscheong01.krotodc.specgenerators.function.MessageToProtoFunctionGenerator
 import com.github.mscheong01.krotodc.util.decapitalize
+import com.github.mscheong01.krotodc.util.descriptorCode
+import com.github.mscheong01.krotodc.util.grpcClass
+import com.github.mscheong01.krotodc.util.krotoServiceImplBaseName
 import com.google.protobuf.Descriptors
 import com.google.protobuf.Descriptors.ServiceDescriptor
 import com.squareup.kotlinpoet.AnnotationSpec

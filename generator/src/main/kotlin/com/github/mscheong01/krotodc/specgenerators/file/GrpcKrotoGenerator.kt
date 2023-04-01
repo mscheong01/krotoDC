@@ -13,12 +13,12 @@
 // limitations under the License.
 package com.github.mscheong01.krotodc.specgenerators.file
 
-import com.github.mscheong01.krotodc.util.addAllImports
-import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
 import com.github.mscheong01.krotodc.specgenerators.TypeSpecGenerator
 import com.github.mscheong01.krotodc.specgenerators.type.ClientStubGenerator
 import com.github.mscheong01.krotodc.specgenerators.type.ServiceImplBaseGenerator
+import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.google.protobuf.Descriptors
 import com.google.protobuf.Descriptors.ServiceDescriptor
 import com.squareup.kotlinpoet.FileSpec

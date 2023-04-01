@@ -14,14 +14,6 @@
 package com.github.mscheong01.krotodc.specgenerators.function
 
 import com.github.mscheong01.krotodc.KrotoDCConverter
-import com.github.mscheong01.krotodc.util.isHandledPreDefinedType
-import com.github.mscheong01.krotodc.util.isKrotoDCOptional
-import com.github.mscheong01.krotodc.util.isPredefinedType
-import com.github.mscheong01.krotodc.util.krotoDCPackage
-import com.github.mscheong01.krotodc.util.krotoDCTypeName
-import com.github.mscheong01.krotodc.util.protobufJavaTypeName
-import com.github.mscheong01.krotodc.util.simpleNames
-import com.github.mscheong01.krotodc.util.toProtoImport
 import com.github.mscheong01.krotodc.import.CodeWithImports
 import com.github.mscheong01.krotodc.import.FunSpecsWithImports
 import com.github.mscheong01.krotodc.import.Import
@@ -31,6 +23,14 @@ import com.github.mscheong01.krotodc.template.TransformTemplateWithImports
 import com.github.mscheong01.krotodc.util.MAP_ENTRY_VALUE_FIELD_NUMBER
 import com.github.mscheong01.krotodc.util.capitalize
 import com.github.mscheong01.krotodc.util.fieldNameToJsonName
+import com.github.mscheong01.krotodc.util.isHandledPreDefinedType
+import com.github.mscheong01.krotodc.util.isKrotoDCOptional
+import com.github.mscheong01.krotodc.util.isPredefinedType
+import com.github.mscheong01.krotodc.util.krotoDCPackage
+import com.github.mscheong01.krotodc.util.krotoDCTypeName
+import com.github.mscheong01.krotodc.util.protobufJavaTypeName
+import com.github.mscheong01.krotodc.util.simpleNames
+import com.github.mscheong01.krotodc.util.toProtoImport
 import com.google.protobuf.Descriptors.Descriptor
 import com.google.protobuf.Descriptors.FieldDescriptor
 import com.squareup.kotlinpoet.AnnotationSpec

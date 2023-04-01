@@ -14,7 +14,15 @@
 package com.github.mscheong01.krotodc.specgenerators.file
 
 import com.github.mscheong01.krotodc.KrotoDC
+import com.github.mscheong01.krotodc.import.Import
+import com.github.mscheong01.krotodc.import.TypeSpecsWithImports
+import com.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType
+import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
+import com.github.mscheong01.krotodc.util.MAP_ENTRY_KEY_FIELD_NUMBER
+import com.github.mscheong01.krotodc.util.MAP_ENTRY_VALUE_FIELD_NUMBER
 import com.github.mscheong01.krotodc.util.addAllImports
+import com.github.mscheong01.krotodc.util.capitalize
+import com.github.mscheong01.krotodc.util.fieldNameToJsonName
 import com.github.mscheong01.krotodc.util.isHandledPreDefinedType
 import com.github.mscheong01.krotodc.util.isKrotoDCOptional
 import com.github.mscheong01.krotodc.util.isPredefinedType
@@ -22,14 +30,6 @@ import com.github.mscheong01.krotodc.util.krotoDCPackage
 import com.github.mscheong01.krotodc.util.krotoDCTypeName
 import com.github.mscheong01.krotodc.util.protobufJavaTypeName
 import com.github.mscheong01.krotodc.util.simpleNames
-import com.github.mscheong01.krotodc.import.Import
-import com.github.mscheong01.krotodc.import.TypeSpecsWithImports
-import com.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType
-import com.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
-import com.github.mscheong01.krotodc.util.MAP_ENTRY_KEY_FIELD_NUMBER
-import com.github.mscheong01.krotodc.util.MAP_ENTRY_VALUE_FIELD_NUMBER
-import com.github.mscheong01.krotodc.util.capitalize
-import com.github.mscheong01.krotodc.util.fieldNameToJsonName
 import com.google.protobuf.Descriptors
 import com.google.protobuf.Descriptors.Descriptor
 import com.squareup.kotlinpoet.AnnotationSpec
