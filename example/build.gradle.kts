@@ -53,3 +53,7 @@ protobuf {
         }
     }
 }
+
+tasks.withType<AbstractPublishToMaven> {
+    enabled = false
+}
