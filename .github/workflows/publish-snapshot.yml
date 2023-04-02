@@ -3,6 +3,12 @@ name: Publish Snapshot
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'generator/src/main/kotlin/**'
+      - 'core/src/main/kotlin/**'
+      - 'build.gradle.kts'
+      - 'generator/build.gradle.kts'
+      - 'core/build.gradle.kts'
   workflow_dispatch:
 
 env:
