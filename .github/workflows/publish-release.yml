@@ -50,9 +50,9 @@ jobs:
         with:
           java-version: '17'
 
-      - name: Build and publish with Gradle
+      - name: Sign and publish with Gradle
         working-directory: ./
-        run: ./gradlew build test publish -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
+        run: ./gradlew sign test publish -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
 
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v2

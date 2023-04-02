@@ -28,6 +28,7 @@ subprojects {
         plugin("com.google.protobuf")
         plugin("maven-publish")
         plugin("org.jlleitschuh.gradle.ktlint")
+        plugin("signing")
     }
 
     group = rootProject.group
@@ -103,6 +104,19 @@ subprojects {
             }
         }
     }
+
+    signing {
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications["maven"])
+    }
+
+    tasks.withType<Sign>().configureEach {
+        onlyIf {
+            project.hasProperty("releaseVersion")
+        }
+    }
 }
 
 tasks.create("updateVersion") {
@@ -114,14 +128,5 @@ tasks.create("updateVersion") {
             prop.setProperty("version", ver)
             prop.store(java.io.FileOutputStream(file), null)
         }
-    }
-}
-
-if (project.hasProperty("releaseVersion")) {
-    signing {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications)
     }
 }
