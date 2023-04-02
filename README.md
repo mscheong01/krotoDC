@@ -61,6 +61,14 @@ krotoDC provides snapshot versions that are automatically released when changes 
 The current snapshot version is the next minor version of the current release version with a -SNAPSHOT suffix. 
 For example, if the current release is 1.2.3, the snapshot version will be 1.3.0-SNAPSHOT.
 
+To use snapshot versions, add the maven snapshot repository to your build configuration
+```kotlin
+repositories {
+    maven {
+        url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
+    }
+}
+```
 ## Contributing
 
 Contributions are welcome! Please see our [contributing guidelines](https://github.com/mscheong01/krotoDC/blob/main/CONTRIBUTING.md) for more information.
