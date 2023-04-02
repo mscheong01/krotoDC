@@ -42,7 +42,11 @@ val Descriptor.protobufJavaTypeName: ClassName
             .split('.')
         if (!this.file.options.javaMultipleFiles) {
             simpleNames = listOf(
-                fieldNameToJsonName(this.file.simpleName).capitalize()
+                if (this.file.options.hasJavaOuterClassname()) {
+                    this.file.options.javaOuterClassname
+                } else {
+                    fieldNameToJsonName(this.file.simpleName).capitalize()
+                }
             ) + simpleNames
         }
         return ClassName(this.file.javaPackage, simpleNames)
@@ -92,7 +96,11 @@ val EnumDescriptor.protobufJavaTypeName: ClassName
             .split('.')
         if (!this.file.options.javaMultipleFiles) {
             simpleNames = listOf(
-                fieldNameToJsonName(this.file.simpleName).capitalize()
+                if (this.file.options.hasJavaOuterClassname()) {
+                    this.file.options.javaOuterClassname
+                } else {
+                    fieldNameToJsonName(this.file.simpleName).capitalize()
+                }
             ) + simpleNames
         }
         return ClassName(this.file.javaPackage, simpleNames)

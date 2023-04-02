@@ -11,21 +11,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-syntax = "proto3";
+package io.github.mscheong01.krotodc.example
 
-import "test.proto";
-import "file_with_java_outer_classname.proto";
+import io.grpc.ServerBuilder
 
-package com.example.importtest;
+fun main() {
+    val server = ServerBuilder
+        .forPort(8080)
+        .addService(SimpleServiceImpl())
+        .build()
 
-option java_package = "io.github.mscheong01.importtest";
+    server.start()
+    println("Server started, listening on ${server.port}")
 
-
-message ImportTestMessage {
-    // import TopLevelMessage.NestedMessage
-    com.example.test.TopLevelMessage.NestedMessage imported_nested_message = 1;
-    // import Person
-    com.example.test.Person imported_person = 2;
-    // import SimpleMessage with outer classname
-    com.example.outerclassnametest.SimpleMessage imported_simple_message = 3;
+    server.awaitTermination()
 }

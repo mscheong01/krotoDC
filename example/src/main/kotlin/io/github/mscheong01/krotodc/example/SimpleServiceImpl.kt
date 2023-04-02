@@ -11,21 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-syntax = "proto3";
+package io.github.mscheong01.krotodc.example
 
-import "test.proto";
-import "file_with_java_outer_classname.proto";
+import com.example.grpc.krotodc.HelloRequest
+import com.example.grpc.krotodc.HelloResponse
+import com.example.grpc.krotodc.SimpleServiceGrpcKroto
 
-package com.example.importtest;
-
-option java_package = "io.github.mscheong01.importtest";
-
-
-message ImportTestMessage {
-    // import TopLevelMessage.NestedMessage
-    com.example.test.TopLevelMessage.NestedMessage imported_nested_message = 1;
-    // import Person
-    com.example.test.Person imported_person = 2;
-    // import SimpleMessage with outer classname
-    com.example.outerclassnametest.SimpleMessage imported_simple_message = 3;
+class SimpleServiceImpl : SimpleServiceGrpcKroto.SimpleServiceCoroutineImplBase() {
+    override suspend fun sayHello(request: HelloRequest): HelloResponse {
+        return HelloResponse(
+            greeting = "Hello, ${request.name}!"
+        )
+    }
 }
