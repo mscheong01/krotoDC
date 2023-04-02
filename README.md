@@ -2,6 +2,7 @@
 
 krotoDC is a protoc plugin for generating Kotlin data classes and gRPC service/stub from a .proto input. This library makes it easy to work with Protocol Buffers and gRPC in your Kotlin projects.
 
+check out my [blog post](https://medium.com/@icycle0409/introducing-krotodc-use-protobuf-and-grpc-with-kotlin-dataclasses-3144d0b20032) that introduces krotoDC
 ## Features
 
 - Generates Kotlin data classes from .proto files
