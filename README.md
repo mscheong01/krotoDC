@@ -56,6 +56,11 @@ protobuf {
 
 3. Build your project, and the plugin will generate Kotlin data classes and gRPC service/stub based on the `.proto` files.
 
+## Snapshot Versions
+krotoDC provides snapshot versions that are automatically released when changes are pushed to the main branch. 
+The current snapshot version is the next minor version of the current release version with a -SNAPSHOT suffix. 
+For example, if the current release is 1.2.3, the snapshot version will be 1.3.0-SNAPSHOT.
+
 ## Contributing
 
 Contributions are welcome! Please see our [contributing guidelines](https://github.com/mscheong01/krotoDC/blob/main/CONTRIBUTING.md) for more information.
