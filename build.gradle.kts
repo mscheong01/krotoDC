@@ -3,6 +3,7 @@ plugins {
     id("com.google.protobuf") version "0.9.2" apply false
     `maven-publish`
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
+    signing
 }
 
 group = "io.github.mscheong01"
@@ -113,5 +114,14 @@ tasks.create("updateVersion") {
             prop.setProperty("version", ver)
             prop.store(java.io.FileOutputStream(file), null)
         }
+    }
+}
+
+if (project.hasProperty("releaseVersion")) {
+    signing {
+        val signingKey: String? by project
+        val signingPassword: String? by project
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications)
     }
 }

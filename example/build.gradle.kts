@@ -28,7 +28,6 @@ dependencies {
 }
 
 protobuf {
-
     protoc {
         artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
     }
