@@ -72,10 +72,10 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
                     field.jsonName,
                     template.safeCall(fieldName)
                 )
-
                 imports.addAll(downStreamImports)
             }
             functionBuilder.addStatement("%L.%LCase.%L -> null", protoType, oneOfJsonName.capitalize(), "${oneOf.name.replace("_", "").uppercase()}_NOT_SET".uppercase())
+            functionBuilder.addStatement("null -> null")
             functionBuilder.endControlFlowWithComma()
         }
 
