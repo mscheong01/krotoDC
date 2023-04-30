@@ -16,7 +16,7 @@ dependencies {
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
     implementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
-    implementation("io.github.mscheong01:krotoDC-core:1.0.0-SNAPSHOT")
+    implementation("io.github.mscheong01:krotoDC-core:1.0.1")
     runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcJavaVersion"]}")
 
     testImplementation("javax.annotation:javax.annotation-api:1.3.2")
@@ -36,7 +36,7 @@ protobuf {
             artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpcJavaVersion"]}"
         }
         id("krotoDC") {
-            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.0.0-SNAPSHOT:jdk8@jar"
+            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.0.1:jdk8@jar"
         }
     }
     generateProtoTasks {
