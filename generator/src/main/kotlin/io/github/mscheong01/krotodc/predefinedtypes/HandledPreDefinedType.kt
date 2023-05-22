@@ -48,7 +48,7 @@ enum class HandledPreDefinedType(
     TIMESTAMP(
         com.google.protobuf.Timestamp.getDescriptor(),
         LocalDateTime::class.asTypeName(),
-        "LocalDateTime.MIN",
+        "Timestamp.getDefaultInstance().toLocalDateTime()",
         TransformTemplateWithImports.of(
             "%L.toLocalDateTime()",
             setOf(Import("io.github.mscheong01.krotodc", listOf("toLocalDateTime")))
