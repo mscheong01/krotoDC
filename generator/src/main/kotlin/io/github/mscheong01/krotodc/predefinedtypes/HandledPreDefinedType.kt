@@ -22,6 +22,7 @@ import com.squareup.kotlinpoet.LONG
 import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.asTypeName
+import io.github.mscheong01.krotodc.import.CodeWithImports
 import io.github.mscheong01.krotodc.import.Import
 import io.github.mscheong01.krotodc.template.TransformTemplateWithImports
 import java.time.LocalDateTime
@@ -29,14 +30,14 @@ import java.time.LocalDateTime
 enum class HandledPreDefinedType(
     val descriptor: Descriptor,
     val kotlinType: TypeName,
-    val defaultValue: String,
+    val defaultValue: CodeWithImports,
     val toDataClassTemplate: TransformTemplateWithImports = TransformTemplateWithImports.of("%L"),
     val toProtoTransformTemplate: TransformTemplateWithImports = TransformTemplateWithImports.of("%L")
 ) {
     EMPTY(
         com.google.protobuf.Empty.getDescriptor(),
         Unit::class.asTypeName(),
-        "Unit",
+        CodeWithImports.of("Unit"),
         TransformTemplateWithImports.of("Unit"),
         TransformTemplateWithImports.of(
             "Empty.getDefaultInstance()",
@@ -48,7 +49,13 @@ enum class HandledPreDefinedType(
     TIMESTAMP(
         com.google.protobuf.Timestamp.getDescriptor(),
         LocalDateTime::class.asTypeName(),
-        "LocalDateTime.MIN",
+        CodeWithImports.of(
+            "Timestamp.getDefaultInstance().toLocalDateTime()",
+            setOf(
+                Import("com.google.protobuf", listOf("Timestamp")),
+                Import("io.github.mscheong01.krotodc", listOf("toLocalDateTime"))
+            )
+        ),
         TransformTemplateWithImports.of(
             "%L.toLocalDateTime()",
             setOf(Import("io.github.mscheong01.krotodc", listOf("toLocalDateTime")))
@@ -61,7 +68,7 @@ enum class HandledPreDefinedType(
     DURATION(
         com.google.protobuf.Duration.getDescriptor(),
         java.time.Duration::class.asTypeName(),
-        "java.time.Duration.ZERO",
+        CodeWithImports.of("java.time.Duration.ZERO"),
         TransformTemplateWithImports.of(
             "%L.toDuration()",
             setOf(Import("io.github.mscheong01.krotodc", listOf("toDuration")))
@@ -76,7 +83,7 @@ enum class HandledPreDefinedType(
     DOUBLE_VALUE(
         com.google.protobuf.DoubleValue.getDescriptor(),
         DOUBLE.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toDoubleValue()",
@@ -86,7 +93,7 @@ enum class HandledPreDefinedType(
     FLOAT_VALUE(
         com.google.protobuf.FloatValue.getDescriptor(),
         FLOAT.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toFloatValue()",
@@ -96,7 +103,7 @@ enum class HandledPreDefinedType(
     INT64_VALUE(
         com.google.protobuf.Int64Value.getDescriptor(),
         LONG.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toInt64Value()",
@@ -106,7 +113,7 @@ enum class HandledPreDefinedType(
     UINT64_VALUE(
         com.google.protobuf.UInt64Value.getDescriptor(),
         LONG.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toUInt64Value()",
@@ -116,7 +123,7 @@ enum class HandledPreDefinedType(
     INT32_VALUE(
         com.google.protobuf.Int32Value.getDescriptor(),
         INT.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toInt32Value()",
@@ -126,7 +133,7 @@ enum class HandledPreDefinedType(
     UINT32_VALUE(
         com.google.protobuf.UInt32Value.getDescriptor(),
         INT.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toUInt32Value()",
@@ -136,7 +143,7 @@ enum class HandledPreDefinedType(
     BOOL_VALUE(
         com.google.protobuf.BoolValue.getDescriptor(),
         BOOLEAN.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toBoolValue()",
@@ -146,7 +153,7 @@ enum class HandledPreDefinedType(
     STRING_VALUE(
         com.google.protobuf.StringValue.getDescriptor(),
         STRING.copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toStringValue()",
@@ -156,7 +163,7 @@ enum class HandledPreDefinedType(
     BYTES_VALUE(
         com.google.protobuf.BytesValue.getDescriptor(),
         com.google.protobuf.ByteString::class.asTypeName().copy(nullable = true),
-        "null",
+        CodeWithImports.of("null"),
         TransformTemplateWithImports.of("%L.value"),
         TransformTemplateWithImports.of(
             "%L.toBytesValue()",

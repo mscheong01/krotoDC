@@ -35,6 +35,7 @@ import com.squareup.kotlinpoet.STRING
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
 import io.github.mscheong01.krotodc.KrotoDC
+import io.github.mscheong01.krotodc.import.CodeWithImports
 import io.github.mscheong01.krotodc.import.Import
 import io.github.mscheong01.krotodc.import.TypeSpecsWithImports
 import io.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType
@@ -69,7 +70,7 @@ class DataClassGenerator : FileSpecGenerator {
     }
 
     fun generateTypeSpecForMessageDescriptor(
-        messageDescriptor: Descriptors.Descriptor
+        messageDescriptor: Descriptor
     ): TypeSpecsWithImports {
         if (
             messageDescriptor.isPredefinedType() ||
@@ -111,6 +112,7 @@ class DataClassGenerator : FileSpecGenerator {
 
             oneOf.fields.forEach {
                 val (type, default) = mapProtoTypeToKotlinTypeAndDefaultValue(it)
+                imports.addAll(default.imports)
                 builder.addType(
                     TypeSpec.classBuilder(it.jsonName.capitalize())
                         .addModifiers(KModifier.DATA)
@@ -121,7 +123,7 @@ class DataClassGenerator : FileSpecGenerator {
                                         it.jsonName,
                                         type
                                     )
-                                        .defaultValue(default)
+                                        .defaultValue(default.code)
                                         .build()
                                 )
                                 .build()
@@ -169,7 +171,8 @@ class DataClassGenerator : FileSpecGenerator {
                 continue
             }
             val fieldName = field.jsonName
-            val (fieldType, defaultValue) = mapProtoTypeToKotlinTypeAndDefaultValue(field)
+            val (fieldType, default) = mapProtoTypeToKotlinTypeAndDefaultValue(field)
+            imports.addAll(default.imports)
             constructorBuilder
                 .addParameter(
                     ParameterSpec
@@ -186,7 +189,7 @@ class DataClassGenerator : FileSpecGenerator {
                                 )
                             }
                         }
-                        .defaultValue(defaultValue).build()
+                        .defaultValue(default.code).build()
                 )
             dataClassBuilder.addProperty(
                 PropertySpec.builder(
@@ -208,26 +211,26 @@ class DataClassGenerator : FileSpecGenerator {
         )
     }
 
-    fun mapProtoTypeToKotlinTypeAndDefaultValue(field: Descriptors.FieldDescriptor): Pair<TypeName, String> {
+    private fun mapProtoTypeToKotlinTypeAndDefaultValue(field: Descriptors.FieldDescriptor): Pair<TypeName, CodeWithImports> {
         var (poetType, defaultValue) = when (
             field.javaType ?: throw IllegalStateException("Field $field does not have a java type")
         ) {
-            Descriptors.FieldDescriptor.JavaType.INT -> Pair(INT, "0")
-            Descriptors.FieldDescriptor.JavaType.LONG -> Pair(LONG, "0L")
-            Descriptors.FieldDescriptor.JavaType.FLOAT -> Pair(FLOAT, "0.0f")
-            Descriptors.FieldDescriptor.JavaType.DOUBLE -> Pair(DOUBLE, "0.0")
-            Descriptors.FieldDescriptor.JavaType.BOOLEAN -> Pair(BOOLEAN, "false")
-            Descriptors.FieldDescriptor.JavaType.STRING -> Pair(STRING, "\"\"")
+            Descriptors.FieldDescriptor.JavaType.INT -> Pair(INT, CodeWithImports.of("0"))
+            Descriptors.FieldDescriptor.JavaType.LONG -> Pair(LONG, CodeWithImports.of("0L"))
+            Descriptors.FieldDescriptor.JavaType.FLOAT -> Pair(FLOAT, CodeWithImports.of("0.0f"))
+            Descriptors.FieldDescriptor.JavaType.DOUBLE -> Pair(DOUBLE, CodeWithImports.of("0.0"))
+            Descriptors.FieldDescriptor.JavaType.BOOLEAN -> Pair(BOOLEAN, CodeWithImports.of("false"))
+            Descriptors.FieldDescriptor.JavaType.STRING -> Pair(STRING, CodeWithImports.of("\"\""))
             Descriptors.FieldDescriptor.JavaType.BYTE_STRING -> Pair(
                 ClassName("com.google.protobuf", "ByteString"),
-                "com.google.protobuf.ByteString.EMPTY"
+                CodeWithImports.of("com.google.protobuf.ByteString.EMPTY")
             )
             Descriptors.FieldDescriptor.JavaType.ENUM -> {
                 val enumType = field.enumType
                     ?: throw IllegalStateException("Enum field $field does not have an enum type")
                 Pair(
                     enumType.protobufJavaTypeName,
-                    "${enumType.protobufJavaTypeName.canonicalName}.values()[0]"
+                    CodeWithImports.of("${enumType.protobufJavaTypeName.canonicalName}.values()[0]")
                 )
             }
             Descriptors.FieldDescriptor.JavaType.MESSAGE -> {
@@ -242,7 +245,7 @@ class DataClassGenerator : FileSpecGenerator {
                         keyType.copy(nullable = false),
                         valueType.copy(nullable = false)
                     )
-                    Pair(type, "mapOf()")
+                    Pair(type, CodeWithImports.of("mapOf()"))
                 } else {
                     getTypeNameAndDefaultValue(field.messageType)
                 }
@@ -250,10 +253,10 @@ class DataClassGenerator : FileSpecGenerator {
         }
         if (field.isRepeated && !field.isMapField) {
             poetType = LIST.parameterizedBy(poetType.copy(nullable = false))
-            defaultValue = "listOf()"
+            defaultValue = CodeWithImports.of("listOf()")
         }
         return if (field.isKrotoDCOptional) {
-            Pair(poetType.copy(nullable = true), "null")
+            Pair(poetType.copy(nullable = true), CodeWithImports.of("null"))
         } else {
             Pair(poetType.copy(nullable = false), defaultValue)
         }
@@ -266,17 +269,17 @@ class DataClassGenerator : FileSpecGenerator {
          */
         fun getTypeNameAndDefaultValue(
             descriptor: Descriptor
-        ): Pair<TypeName, String> {
+        ): Pair<TypeName, CodeWithImports> {
             val generatedTypeName = descriptor.krotoDCTypeName
             if (descriptor.isPredefinedType()) {
                 return getTypeNameAndDefaultValueForPreDefinedTypes(descriptor)
             }
-            return Pair(generatedTypeName, "${generatedTypeName.canonicalName}()")
+            return Pair(generatedTypeName, CodeWithImports.of("${generatedTypeName.canonicalName}()"))
         }
 
         private fun getTypeNameAndDefaultValueForPreDefinedTypes(
             descriptor: Descriptor
-        ): Pair<TypeName, String> {
+        ): Pair<TypeName, CodeWithImports> {
             return if (descriptor.isHandledPreDefinedType()) {
                 HandledPreDefinedType.valueOfByDescriptor(descriptor).let {
                     it.kotlinType to it.defaultValue
@@ -284,7 +287,7 @@ class DataClassGenerator : FileSpecGenerator {
             } else {
                 Pair(
                     descriptor.protobufJavaTypeName,
-                    "${descriptor.protobufJavaTypeName.canonicalName}.getDefaultInstance()"
+                    CodeWithImports.of("${descriptor.protobufJavaTypeName.canonicalName}.getDefaultInstance()")
                 )
             }
         }
