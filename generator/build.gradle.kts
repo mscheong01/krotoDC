@@ -36,6 +36,7 @@ dependencies {
     testImplementation("javax.annotation:javax.annotation-api:1.3.2")
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("io.grpc:grpc-testing:${rootProject.ext["grpcJavaVersion"]}")
