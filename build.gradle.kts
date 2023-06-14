@@ -93,6 +93,10 @@ subprojects {
                 }
             }
         }
+
+        tasks.withType<Test> {
+            useJUnitPlatform()
+        }
     }
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {

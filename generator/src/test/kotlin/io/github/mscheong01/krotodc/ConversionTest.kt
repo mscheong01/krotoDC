@@ -13,6 +13,7 @@
 // limitations under the License.
 package io.github.mscheong01.krotodc
 
+import com.example.importtest.OuterClassNameTestProto
 import com.google.protobuf.ByteString
 import io.github.mscheong01.importtest.ImportFromOtherFileTest.ImportTestMessage
 import io.github.mscheong01.importtest.krotodc.importtestmessage.toDataClass
@@ -293,6 +294,7 @@ class ConversionTest {
         val proto = ImportTestMessage.newBuilder()
             .setImportedNestedMessage(TopLevelMessage.NestedMessage.newBuilder().setName("test").build())
             .setImportedPerson(Person.newBuilder().setName("John").setAge(30).build())
+            .setImportedSimpleMessage(OuterClassNameTestProto.SimpleMessage.newBuilder().setName("test").build())
             .build()
         val kroto = proto.toDataClass()
         Assertions.assertThat(kroto.importedNestedMessage).isEqualTo(
