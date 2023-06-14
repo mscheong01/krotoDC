@@ -29,10 +29,12 @@ import io.github.mscheong01.krotodc.template.TransformTemplateWithImports
 import io.github.mscheong01.krotodc.util.MAP_ENTRY_VALUE_FIELD_NUMBER
 import io.github.mscheong01.krotodc.util.capitalize
 import io.github.mscheong01.krotodc.util.endControlFlowWithComma
+import io.github.mscheong01.krotodc.util.escapeIfNecessary
 import io.github.mscheong01.krotodc.util.fieldNameToJsonName
 import io.github.mscheong01.krotodc.util.isHandledPreDefinedType
 import io.github.mscheong01.krotodc.util.isKrotoDCOptional
 import io.github.mscheong01.krotodc.util.isPredefinedType
+import io.github.mscheong01.krotodc.util.javaFieldName
 import io.github.mscheong01.krotodc.util.krotoDCPackage
 import io.github.mscheong01.krotodc.util.krotoDCTypeName
 import io.github.mscheong01.krotodc.util.protobufJavaTypeName
@@ -52,9 +54,14 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
 
         for (oneOf in descriptor.realOneofs) {
             val oneOfJsonName = fieldNameToJsonName(oneOf.name)
-            functionBuilder.beginControlFlow("%L = when (%LCase)", oneOfJsonName, oneOfJsonName)
+            functionBuilder.beginControlFlow(
+                "%L = when (%LCase)",
+                oneOfJsonName.escapeIfNecessary(),
+                oneOfJsonName
+            )
             for (field in oneOf.fields) {
-                val fieldName = field.jsonName
+                val dataClassFieldName = field.jsonName
+                val protoFieldName = field.javaFieldName
                 val (template, downStreamImports) = transformCodeTemplate(field)
                 val oneOfDataClassName = ClassName(
                     oneOf.file.krotoDCPackage,
@@ -69,8 +76,8 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
                     oneOfJsonName.capitalize(),
                     field.name.uppercase(),
                     oneOfDataClassName.canonicalName,
-                    field.jsonName,
-                    template.safeCall(fieldName)
+                    dataClassFieldName.escapeIfNecessary(),
+                    template.safeCall(protoFieldName.escapeIfNecessary())
                 )
                 imports.addAll(downStreamImports)
             }
@@ -84,22 +91,23 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
                 continue
             }
 
-            val fieldName = field.jsonName
+            val dataClassFieldName = field.jsonName
+            val protoFieldName = field.javaFieldName
             val optional = field.isKrotoDCOptional
-            functionBuilder.addCode("%L = ", fieldName)
+            functionBuilder.addCode("%L = ", dataClassFieldName.escapeIfNecessary())
             if (optional) {
-                functionBuilder.beginControlFlow("if (has${fieldName.capitalize()}())")
+                functionBuilder.beginControlFlow("if (has${protoFieldName.capitalize()}())")
             }
 
             val codeWithImports = if (field.isMapField) {
                 val valueField = field.messageType.findFieldByNumber(MAP_ENTRY_VALUE_FIELD_NUMBER)
                 val (template, downStreamImports) = transformCodeTemplate(valueField)
                 val mapCodeBlock = if (template.value == "%L") {
-                    CodeBlock.of("%LMap", fieldName)
+                    CodeBlock.of("%LMap", protoFieldName)
                 } else {
                     CodeBlock.of(
                         "%LMap.mapValues { %L }",
-                        fieldName,
+                        protoFieldName,
                         template.safeCall("it.value")
                     )
                 }
@@ -107,15 +115,15 @@ class MessageToDataClassFunctionGenerator : FunSpecGenerator<Descriptor> {
             } else if (field.isRepeated) {
                 val (template, downStreamImports) = transformCodeTemplate(field)
                 val repeatedCodeBlock = if (template.value == "%L") {
-                    CodeBlock.of("%LList", fieldName)
+                    CodeBlock.of("%LList", protoFieldName)
                 } else {
-                    CodeBlock.of("%LList.map { %L }", fieldName, template.safeCall("it"))
+                    CodeBlock.of("%LList.map { %L }", protoFieldName, template.safeCall("it"))
                 }
                 CodeWithImports.of(repeatedCodeBlock, downStreamImports)
             } else {
                 val (template, downStreamImports) = transformCodeTemplate(field)
                 CodeWithImports.of(
-                    template.safeCall(fieldName),
+                    template.safeCall(protoFieldName.escapeIfNecessary()),
                     downStreamImports
                 )
             }
