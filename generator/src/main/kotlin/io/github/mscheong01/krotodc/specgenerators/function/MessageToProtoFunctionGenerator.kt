@@ -28,10 +28,12 @@ import io.github.mscheong01.krotodc.specgenerators.FunSpecGenerator
 import io.github.mscheong01.krotodc.template.TransformTemplateWithImports
 import io.github.mscheong01.krotodc.util.MAP_ENTRY_VALUE_FIELD_NUMBER
 import io.github.mscheong01.krotodc.util.capitalize
+import io.github.mscheong01.krotodc.util.escapeIfNecessary
 import io.github.mscheong01.krotodc.util.fieldNameToJsonName
 import io.github.mscheong01.krotodc.util.isHandledPreDefinedType
 import io.github.mscheong01.krotodc.util.isKrotoDCOptional
 import io.github.mscheong01.krotodc.util.isPredefinedType
+import io.github.mscheong01.krotodc.util.javaFieldName
 import io.github.mscheong01.krotodc.util.krotoDCPackage
 import io.github.mscheong01.krotodc.util.krotoDCTypeName
 import io.github.mscheong01.krotodc.util.protobufJavaTypeName
@@ -53,7 +55,7 @@ class MessageToProtoFunctionGenerator : FunSpecGenerator<Descriptor> {
 
         for (oneOf in descriptor.realOneofs) {
             val oneOfJsonName = fieldNameToJsonName(oneOf.name)
-            functionBuilder.beginControlFlow("when (%L)", oneOfJsonName)
+            functionBuilder.beginControlFlow("when (%L)", oneOfJsonName.escapeIfNecessary())
             for (field in oneOf.fields) {
                 val oneOfFieldDataClassName = ClassName(
                     oneOf.file.krotoDCPackage,
@@ -65,8 +67,17 @@ class MessageToProtoFunctionGenerator : FunSpecGenerator<Descriptor> {
                 functionBuilder.beginControlFlow("is %L ->", oneOfFieldDataClassName)
                 val (template, downStreamImports) = transformCodeTemplate(field)
                 functionBuilder.addStatement(
-                    "set${field.jsonName.capitalize()}(%L)",
-                    CodeBlock.of("%L", template.safeCall(CodeBlock.of("%L.%L", oneOfJsonName, field.jsonName)))
+                    "set${field.javaFieldName.capitalize()}(%L)",
+                    CodeBlock.of(
+                        "%L",
+                        template.safeCall(
+                            CodeBlock.of(
+                                "%L.%L",
+                                oneOfJsonName.escapeIfNecessary(),
+                                field.jsonName.escapeIfNecessary()
+                            )
+                        )
+                    )
                 )
 
                 functionBuilder.endControlFlow()
@@ -80,7 +91,7 @@ class MessageToProtoFunctionGenerator : FunSpecGenerator<Descriptor> {
             if (field.name in descriptor.realOneofs.map { it.fields }.flatten().map { it.name }.toSet()) {
                 continue
             }
-            val fieldName = "this@toProto.${field.jsonName}"
+            val fieldName = "this@toProto.${field.jsonName.escapeIfNecessary()}"
             val optional = field.isKrotoDCOptional
             if (optional) {
                 functionBuilder.beginControlFlow("if ($fieldName != null)")
@@ -111,9 +122,9 @@ class MessageToProtoFunctionGenerator : FunSpecGenerator<Descriptor> {
                 )
             }
             val accessorMethodName = when {
-                field.isMapField -> "putAll${field.jsonName.capitalize()}"
-                field.isRepeated -> "addAll${field.jsonName.capitalize()}"
-                else -> "set${field.jsonName.capitalize()}"
+                field.isMapField -> "putAll${field.javaFieldName.capitalize()}"
+                field.isRepeated -> "addAll${field.javaFieldName.capitalize()}"
+                else -> "set${field.javaFieldName.capitalize()}"
             }
             imports.addAll(codeWithImports.imports)
             functionBuilder.addCode(

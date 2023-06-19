@@ -176,3 +176,40 @@ val Descriptor.toDataClassImport: Import
             listOf("toDataClass")
         )
     }
+
+/**
+ * beware: does not escape Kotlin keywords
+ */
+val FieldDescriptor.javaFieldName: String
+    get() {
+        val jsonName = this.jsonName
+        /**
+         * protobuf-java escapes special fields in order to avoid name clashes with Java/Protobuf keywords
+         * @see https://github.com/protocolbuffers/protobuf/blob/2cf94fafe39eeab44d3ab83898aabf03ff930d7a/java/core/src/main/java/com/google/protobuf/DescriptorMessageInfoFactory.java#L629C1-L648
+         */
+        return if (PROTOBUF_JAVA_SPECIAL_FIELD_NAMES.contains(jsonName.capitalize())) {
+            jsonName + "_"
+        } else {
+            jsonName
+        }
+    }
+
+/**
+ * @see https://github.com/protocolbuffers/protobuf/blob/2cf94fafe39eeab44d3ab83898aabf03ff930d7a/java/core/src/main/java/com/google/protobuf/DescriptorMessageInfoFactory.java#L72
+ */
+val PROTOBUF_JAVA_SPECIAL_FIELD_NAMES = setOf(
+    // java.lang.Object:
+    "Class",
+    // com.google.protobuf.MessageLiteOrBuilder:
+    "DefaultInstanceForType",
+    // com.google.protobuf.MessageLite:
+    "ParserForType",
+    "SerializedSize",
+    // com.google.protobuf.MessageOrBuilder:
+    "AllFields",
+    "DescriptorForType",
+    "InitializationErrorString",
+    "UnknownFields",
+    // obsolete. kept for backwards compatibility of generated code
+    "CachedSize"
+)
