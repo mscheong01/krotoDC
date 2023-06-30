@@ -50,6 +50,8 @@ internal fun fieldNameToJsonName(name: String): String {
             }
             result.append(ch)
             isNextUpperCase = false
+        } else if (i == 0) {
+            result.append(ch.lowercaseChar())
         } else {
             result.append(ch)
         }
