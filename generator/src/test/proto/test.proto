@@ -107,3 +107,12 @@ message DeprecatedMessage {
     Person oneof_person = 4;
   }
 }
+
+message Persons {
+  Person person = 1;
+  Person person_2nd = 2;
+  oneof TagCode {
+    string tag = 3;
+    string tag_2nd = 4;
+  }
+}
