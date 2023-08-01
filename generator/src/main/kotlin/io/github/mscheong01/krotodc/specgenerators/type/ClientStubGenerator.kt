@@ -34,8 +34,10 @@ import io.github.mscheong01.krotodc.specgenerators.file.DataClassGenerator
 import io.github.mscheong01.krotodc.specgenerators.function.MessageToDataClassFunctionGenerator
 import io.github.mscheong01.krotodc.specgenerators.function.MessageToProtoFunctionGenerator
 import io.github.mscheong01.krotodc.util.descriptorCode
+import io.github.mscheong01.krotodc.util.grpcClass
 import io.grpc.kotlin.AbstractCoroutineStub
 import io.grpc.kotlin.ClientCalls
+import io.grpc.kotlin.StubFor
 import kotlinx.coroutines.flow.Flow
 
 class ClientStubGenerator : TypeSpecGenerator<ServiceDescriptor> {
@@ -72,6 +74,11 @@ class ClientStubGenerator : TypeSpecGenerator<ServiceDescriptor> {
                 .addParameter("callOptions", io.grpc.CallOptions::class)
                 .returns(TypeVariableName(className))
                 .addStatement("return %T(channel, callOptions)", TypeVariableName(className))
+                .build()
+        )
+        typeBuilder.addAnnotation(
+            AnnotationSpec.builder(StubFor::class)
+                .addMember("%T::class", descriptor.grpcClass)
                 .build()
         )
 

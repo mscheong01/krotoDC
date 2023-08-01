@@ -84,9 +84,9 @@ protobuf {
         id("grpc") {
             artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpcJavaVersion"]}"
         }
-//        id("grpckt") {
-//            artifact = "io.grpc:protoc-gen-grpc-kotlin:${rootProject.ext["grpcJavaVersion"]}"
-//        }
+        id("grpckt") {
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:${rootProject.ext["grpcKotlinVersion"]}:jdk8@jar"
+        }
         id("krotoDC") {
             path = tasks.jar.get().archiveFile.get().asFile.absolutePath
         }
@@ -99,7 +99,7 @@ protobuf {
 
             it.plugins {
                 id("grpc")
-//                id("grpckt")
+                id("grpckt")
                 id("krotoDC")
             }
         }
