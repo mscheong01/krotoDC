@@ -57,6 +57,7 @@ class ClientStubGenerator : TypeSpecGenerator<ServiceDescriptor> {
                             .defaultValue("%M", io.grpc.CallOptions::class.member("DEFAULT"))
                             .build()
                     )
+                    .addAnnotation(JvmOverloads::class)
                     .build()
             )
             .addSuperclassConstructorParameter("channel")
