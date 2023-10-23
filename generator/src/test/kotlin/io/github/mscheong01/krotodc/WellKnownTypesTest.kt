@@ -22,6 +22,7 @@ import com.google.protobuf.FloatValue
 import com.google.protobuf.Int32Value
 import com.google.protobuf.Int64Value
 import com.google.protobuf.StringValue
+import com.google.protobuf.Timestamp
 import com.google.protobuf.UInt32Value
 import com.google.protobuf.UInt64Value
 import io.github.mscheong01.test.Person
@@ -62,8 +63,8 @@ import io.github.mscheong01.wellknowntypes.krotodc.timemessage.toProto
 import io.github.mscheong01.wellknowntypes.krotodc.wrappermessage.toDataClass
 import io.github.mscheong01.wellknowntypes.krotodc.wrappermessage.toProto
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
+import java.time.Instant
 import java.time.LocalDateTime
 
 class WellKnownTypesTest {
@@ -76,7 +77,6 @@ class WellKnownTypesTest {
         Assertions.assertThat(proto2).isEqualTo(proto)
     }
 
-    @Disabled
     @Test
     fun `test message with time types`() {
         val kroto = io.github.mscheong01.wellknowntypes.krotodc.TimeMessage(
@@ -88,7 +88,7 @@ class WellKnownTypesTest {
             TimeMessage.newBuilder()
                 .setTimestamp(
                     com.google.protobuf.Timestamp.newBuilder()
-                        .setSeconds(1680182461)
+                        .setSeconds(1680214861)
                         .setNanos(2)
                         .build()
                 )
@@ -183,18 +183,17 @@ class WellKnownTypesTest {
         Assertions.assertThat(proto2).isEqualTo(proto)
     }
 
-    @Disabled
     @Test
     fun `test message with repeated time types`() {
         val proto = RepeatedTimeMessage.newBuilder()
             .addAllTimestamp(
                 listOf(
                     com.google.protobuf.Timestamp.newBuilder()
-                        .setSeconds(1680182461)
+                        .setSeconds(1680214861)
                         .setNanos(2)
                         .build(),
                     com.google.protobuf.Timestamp.newBuilder()
-                        .setSeconds(1680182461)
+                        .setSeconds(1680214861)
                         .setNanos(2)
                         .build()
                 )
@@ -362,14 +361,13 @@ class WellKnownTypesTest {
         Assertions.assertThat(proto2).isEqualTo(proto)
     }
 
-    @Disabled
     @Test
     fun `test message wit map time fields`() {
         val proto = MapTimeMessage.newBuilder()
             .putAllTimestamp(
                 mapOf(
                     "key" to com.google.protobuf.Timestamp.newBuilder()
-                        .setSeconds(1680182461)
+                        .setSeconds(1680214861)
                         .setNanos(2)
                         .build()
                 )
@@ -451,5 +449,24 @@ class WellKnownTypesTest {
         )
         val proto2 = kroto.toProto()
         Assertions.assertThat(proto2).isEqualTo(proto)
+    }
+
+    @Test
+    fun `test instant and timestamps`() {
+        val someInstant = Instant.now()
+
+        Assertions.assertThat(someInstant.toProtoTimestamp())
+            .isEqualTo(
+                Timestamp.newBuilder()
+                    .setSeconds(someInstant.epochSecond).setNanos(someInstant.nano).build()
+            )
+        Assertions.assertThat(someInstant.toProtoTimestamp().toInstant())
+            .isEqualTo(someInstant)
+
+        val someTimestamp = Timestamp.newBuilder().setSeconds(1329845211).setNanos(23).build()
+        Assertions.assertThat(someTimestamp.toInstant())
+            .isEqualTo(Instant.ofEpochSecond(1329845211, 23))
+        Assertions.assertThat(someTimestamp.toInstant().toProtoTimestamp())
+            .isEqualTo(someTimestamp)
     }
 }

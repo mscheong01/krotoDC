@@ -27,17 +27,24 @@ import com.google.protobuf.UInt64Value
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
+import java.time.ZoneOffset
 
 fun Timestamp.toLocalDateTime(): LocalDateTime {
-    val instant = Instant.ofEpochSecond(this.seconds, this.nanos.toLong())
-    return LocalDateTime.ofInstant(instant, ZoneId.systemDefault())
+    val instant = this.toInstant()
+    return LocalDateTime.ofInstant(instant, ZoneOffset.UTC)
+}
+
+fun Timestamp.toInstant(): Instant {
+    return Instant.ofEpochSecond(this.seconds, this.nanos.toLong())
 }
 
 fun LocalDateTime.toProtoTimestamp(): Timestamp {
-    val instant = this.atZone(ZoneId.systemDefault()).toInstant()
-    return Timestamp.newBuilder().setSeconds(instant.epochSecond)
-        .setNanos(instant.nano)
+    return this.atZone(ZoneOffset.UTC).toInstant().toProtoTimestamp()
+}
+
+fun Instant.toProtoTimestamp(): Timestamp {
+    return Timestamp.newBuilder().setSeconds(this.epochSecond)
+        .setNanos(this.nano)
         .build()
 }
 
