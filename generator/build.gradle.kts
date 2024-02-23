@@ -39,6 +39,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.24.2")
+    testImplementation("io.grpc:grpc-inprocess:${rootProject.ext["grpcJavaVersion"]}")
     testImplementation("io.grpc:grpc-testing:${rootProject.ext["grpcJavaVersion"]}")
 }
 
