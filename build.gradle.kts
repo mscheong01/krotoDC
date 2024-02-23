@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") version "1.7.20" apply false
-    id("com.google.protobuf") version "0.9.2" apply false
+    kotlin("jvm") version "1.9.22" apply false
+    id("com.google.protobuf") version "0.9.4" apply false
     `maven-publish`
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
     signing
@@ -11,11 +11,11 @@ if (project.hasProperty("releaseVersion")) {
     version = project.property("releaseVersion") as String
 }
 
-ext["grpcJavaVersion"] = "1.54.0"
-ext["grpcKotlinVersion"] = "1.3.0"
-ext["protobufVersion"] = "3.22.2"
-ext["coroutinesVersion"] = "1.6.2"
-ext["kotlinPoetVersion"] = "1.12.0"
+ext["grpcJavaVersion"] = "1.61.1"
+ext["grpcKotlinVersion"] = "1.4.1"
+ext["protobufVersion"] = "3.25.3"
+ext["coroutinesVersion"] = "1.8.0"
+ext["kotlinPoetVersion"] = "1.16.0"
 
 repositories {
     mavenCentral()
