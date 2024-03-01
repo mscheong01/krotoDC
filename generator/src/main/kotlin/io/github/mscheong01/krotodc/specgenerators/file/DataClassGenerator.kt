@@ -205,6 +205,8 @@ class DataClassGenerator : FileSpecGenerator {
                 .addMember("forProto = %L::class", messageDescriptor.protobufJavaTypeName)
                 .build()
         )
+
+        dataClassBuilder.addType(TypeSpec.companionObjectBuilder().build())
         return TypeSpecsWithImports(
             listOf(dataClassBuilder.build()),
             imports

@@ -17,6 +17,7 @@ dependencies {
 //    implementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
     implementation("com.google.protobuf:protobuf-java:${rootProject.ext["protobufVersion"]}")
+    implementation("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
 
     implementation(kotlin("reflect"))
     implementation("com.squareup:kotlinpoet:${rootProject.ext["kotlinPoetVersion"]}")
