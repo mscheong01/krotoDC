@@ -19,8 +19,10 @@ import com.squareup.kotlinpoet.FunSpec
 import io.github.mscheong01.krotodc.import.FunSpecsWithImports
 import io.github.mscheong01.krotodc.import.Import
 import io.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
+import io.github.mscheong01.krotodc.specgenerators.function.FromJsonFunctionGenerator
 import io.github.mscheong01.krotodc.specgenerators.function.MessageToDataClassFunctionGenerator
 import io.github.mscheong01.krotodc.specgenerators.function.MessageToProtoFunctionGenerator
+import io.github.mscheong01.krotodc.specgenerators.function.ToJsonFunctionGenerator
 import io.github.mscheong01.krotodc.util.addAllImports
 import io.github.mscheong01.krotodc.util.isPredefinedType
 import io.github.mscheong01.krotodc.util.krotoDCPackage
@@ -29,6 +31,8 @@ class ConverterGenerator : FileSpecGenerator {
 
     val messageToDataClassGenerator = MessageToDataClassFunctionGenerator()
     val messageToProtoGenerator = MessageToProtoFunctionGenerator()
+    val toJsonFunctionGenerator = ToJsonFunctionGenerator()
+    val fromJsonFunctionGenerator = FromJsonFunctionGenerator()
 
     override fun generate(fileDescriptor: Descriptors.FileDescriptor): List<FileSpec> {
         val fileSpecs = mutableMapOf<String, FileSpec>()
@@ -64,6 +68,15 @@ class ConverterGenerator : FileSpecGenerator {
             funSpecs.addAll(it.funSpecs)
             imports.addAll(it.imports)
         }
+        toJsonFunctionGenerator.generate(messageDescriptor).let {
+            funSpecs.addAll(it.funSpecs)
+            imports.addAll(it.imports)
+        }
+        fromJsonFunctionGenerator.generate(messageDescriptor).let {
+            funSpecs.addAll(it.funSpecs)
+            imports.addAll(it.imports)
+        }
+
         messageDescriptor.nestedTypes.forEach { nestedType ->
             generateConvertersForMessageDescriptor(nestedType).let {
                 funSpecs.addAll(it.funSpecs)
