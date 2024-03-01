@@ -19,6 +19,7 @@ In your project's `build.gradle.kts` file, add the following dependencies:
 ```kotlin
 dependencies {
     implementation("com.google.protobuf:protobuf-java:3.25.3")
+    implementation("com.google.protobuf:protobuf-java-util:3.25.3")
     implementation("io.grpc:grpc-stub:1.61.1")
     implementation("io.grpc:grpc-kotlin-stub:1.4.1")
     implementation("io.github.mscheong01:krotoDC-core:1.0.7")
