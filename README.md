@@ -22,7 +22,7 @@ dependencies {
     implementation("com.google.protobuf:protobuf-java-util:3.25.3")
     implementation("io.grpc:grpc-stub:1.61.1")
     implementation("io.grpc:grpc-kotlin-stub:1.4.1")
-    implementation("io.github.mscheong01:krotoDC-core:1.1.0")
+    implementation("io.github.mscheong01:krotoDC-core:1.1.1")
 }
 ```
 
@@ -40,7 +40,7 @@ protobuf {
             artifact = "io.grpc:protoc-gen-grpc-java:1.61.1"
         }
         id("krotoDC") {
-            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.0:jdk8@jar"
+            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.1:jdk8@jar"
         }
     }
     generateProtoTasks {
