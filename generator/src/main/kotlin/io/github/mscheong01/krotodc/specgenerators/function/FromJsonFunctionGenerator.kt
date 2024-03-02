@@ -42,7 +42,10 @@ class FromJsonFunctionGenerator : FunSpecGenerator<Descriptor> {
             )
             .receiver(generatedTypeCompanion)
             .returns(generatedType)
-        functionBuilder.addCode("return %L.newBuilder().apply { JsonFormat.parser().ignoringUnknownFields().merge(json, this@apply) }.build().toDataClass();\n", protoType)
+        functionBuilder.addCode("return %L.newBuilder()\n", protoType)
+        functionBuilder.addCode("       .apply {\n")
+        functionBuilder.addCode("           JsonFormat.parser().ignoringUnknownFields().merge(json, this@apply)\n")
+        functionBuilder.addCode("       }.build().toDataClass();\n")
 
         imports.add(Import("com.google.protobuf.util", listOf("JsonFormat")))
         return FunSpecsWithImports(

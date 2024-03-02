@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.application.system.types";
+option java_outer_classname = "VeryLongMessageNameProto";
+
+package com.example.application.system.types;
+
+message VeryVeryLongTestProtocolBuffersMessageName {
+  repeated string type = 1;
+}
