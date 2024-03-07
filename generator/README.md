@@ -142,3 +142,30 @@ this is useful for interoperability with other libraries that use protobuf-java
 for all protobuf services, the plugin will generate a Kotlin Class with a ~GrpcKroto suffix.
 the class will contain a CoroutineServiceBase and a CoroutineStub.
 Their functionality is identical to that of the grpc-kotlin library, but the method stubs use krotoDC generated protobuf dataclasses as request and response types
+
+example usage:
+server
+```kotlin
+// define
+class SimpleServiceImpl : SimpleServiceGrpcKroto.SimpleServiceCoroutineImplBase() {
+    override suspend fun sayHello(request: HelloRequest): HelloResponse {
+        return HelloResponse(
+            greeting = "Hello, ${request.name}!"
+        )
+    }
+}
+// host
+val server = ServerBuilder
+    .forPort(8080)
+    .addService(SimpleServiceImpl())
+    .build()
+server.start()
+```
+client
+```kotlin
+val channel = ManagedChannelBuilder.forAddress("localhost", 8080).usePlaintext().build()
+val stub = SimpleServiceGrpcKroto.SimpleServiceCoroutineStub(channel)
+val response = stub.sayHello(
+    HelloRequest(name = "KrotoDC")
+)
+```
