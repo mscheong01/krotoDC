@@ -19,10 +19,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.PAT }}
+        run: |
+          git clone https://mscheong01:${{ secrets.PAT }}@github.com/mscheong01/krotoDC.git
+          cd krotoDC
 
       - name: Get Previous tag
         id: previous_tag
