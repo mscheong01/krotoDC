@@ -123,8 +123,9 @@ class DataClassGenerator : FileSpecGenerator {
                                         it.jsonName,
                                         type
                                     ).apply {
-                                        if (it.isKrotoDCOptional)
+                                        if (it.isKrotoDCOptional) {
                                             defaultValue(default.code)
+                                        }
                                     }.build()
                                 ).build()
                         )
@@ -190,8 +191,9 @@ class DataClassGenerator : FileSpecGenerator {
                             }
                         }
                         .apply {
-                            if (field.isKrotoDCOptional)
+                            if (field.isKrotoDCOptional) {
                                 defaultValue(default.code)
+                            }
                         }.build()
                 )
             dataClassBuilder.addProperty(

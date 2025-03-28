@@ -16,7 +16,6 @@ package io.github.mscheong01.krotodc
 import com.google.protobuf.Descriptors
 import com.google.protobuf.compiler.PluginProtos
 import com.squareup.kotlinpoet.FileSpec
-import io.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.ConverterGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.DataClassGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.GrpcKrotoGenerator
