@@ -122,11 +122,11 @@ class DataClassGenerator : FileSpecGenerator {
                                     ParameterSpec.builder(
                                         it.jsonName,
                                         type
-                                    )
-                                        .defaultValue(default.code)
-                                        .build()
-                                )
-                                .build()
+                                    ).apply {
+                                        if (it.isKrotoDCOptional)
+                                            defaultValue(default.code)
+                                    }.build()
+                                ).build()
                         )
                         .addProperty(
                             PropertySpec.builder(
@@ -189,7 +189,10 @@ class DataClassGenerator : FileSpecGenerator {
                                 )
                             }
                         }
-                        .defaultValue(default.code).build()
+                        .apply {
+                            if (field.isKrotoDCOptional)
+                                defaultValue(default.code)
+                        }.build()
                 )
             dataClassBuilder.addProperty(
                 PropertySpec.builder(
@@ -227,6 +230,7 @@ class DataClassGenerator : FileSpecGenerator {
                 ClassName("com.google.protobuf", "ByteString"),
                 CodeWithImports.of("com.google.protobuf.ByteString.EMPTY")
             )
+
             Descriptors.FieldDescriptor.JavaType.ENUM -> {
                 val enumType = field.enumType
                     ?: throw IllegalStateException("Enum field $field does not have an enum type")
@@ -235,6 +239,7 @@ class DataClassGenerator : FileSpecGenerator {
                     CodeWithImports.of("${enumType.protobufJavaTypeName.canonicalName}.values()[0]")
                 )
             }
+
             Descriptors.FieldDescriptor.JavaType.MESSAGE -> {
                 if (field.isMapField) {
                     val keyType = field.messageType.findFieldByNumber(MAP_ENTRY_KEY_FIELD_NUMBER)

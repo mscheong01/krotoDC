@@ -22,6 +22,13 @@ import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import io.github.mscheong01.krotodc.import.Import
 import io.github.mscheong01.krotodc.predefinedtypes.HandledPreDefinedType
+import java.lang.reflect.Method
+
+val hasOptionalKeywordMethod: Method = FieldDescriptor::class.java
+    .getDeclaredMethod("hasOptionalKeyword")
+    .apply {
+        isAccessible = true
+    }
 
 val FileDescriptor.javaPackage: String
     get() = when (val javaPackage = this.options.javaPackage) {
@@ -116,7 +123,7 @@ val EnumDescriptor.krotoDCTypeName: ClassName
 
 val FieldDescriptor.isKrotoDCOptional: Boolean
     get() {
-        if (this.hasOptionalKeyword()) {
+        if (hasOptionalKeywordMethod.invoke(this) as Boolean) {
             return true
         }
         if (this.isRepeated || isMapField) {
