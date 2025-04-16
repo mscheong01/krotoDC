@@ -18,11 +18,11 @@ In your project's `build.gradle.kts` file, add the following dependencies:
 
 ```kotlin
 dependencies {
-    implementation("com.google.protobuf:protobuf-java:3.25.3")
-    implementation("com.google.protobuf:protobuf-java-util:3.25.3")
-    implementation("io.grpc:grpc-stub:1.61.1")
-    implementation("io.grpc:grpc-kotlin-stub:1.4.1")
-    implementation("io.github.mscheong01:krotoDC-core:1.1.1")
+    implementation("com.google.protobuf:protobuf-java:4.30.1")
+    implementation("com.google.protobuf:protobuf-java-util:4.30.1")
+    implementation("io.grpc:grpc-stub:1.70.0")
+    implementation("io.grpc:grpc-kotlin-stub:1.4.0")
+    implementation("io.github.mscheong01:krotoDC-core:1.2.0")
 }
 ```
 
@@ -33,14 +33,14 @@ dependencies {
 ```kotlin
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.25.3"
+        artifact = "com.google.protobuf:protoc:4.30.1"
     }
     plugins {
         id("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.61.1"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.70.1"
         }
         id("krotoDC") {
-            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.1:jdk8@jar"
+            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.2.0:jdk8@jar"
         }
     }
     generateProtoTasks {

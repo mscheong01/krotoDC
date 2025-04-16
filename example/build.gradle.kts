@@ -11,18 +11,13 @@ dependencies {
 //    implementation(kotlin("stdlib"))
 //    implementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
-
-    // TODO: update example protobuf dependency to 4+
-    // implementation("com.google.protobuf:protobuf-java:${rootProject.ext["protobufVersion"]}")
-    // implementation("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
-    implementation("com.google.protobuf:protobuf-java:3.25.4")
-    implementation("com.google.protobuf:protobuf-java-util:3.25.4")
-
+    implementation("com.google.protobuf:protobuf-java:${rootProject.ext["protobufVersion"]}")
+    implementation("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
     implementation("io.grpc:grpc-stub:${rootProject.ext["grpcJavaVersion"]}")
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
     implementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
-    implementation("io.github.mscheong01:krotoDC-core:1.1.1")
+    implementation("io.github.mscheong01:krotoDC-core:1.2.0")
     runtimeOnly("io.grpc:grpc-netty:${rootProject.ext["grpcJavaVersion"]}")
 
     testImplementation("javax.annotation:javax.annotation-api:1.3.2")
@@ -36,15 +31,14 @@ dependencies {
 
 protobuf {
     protoc {
-        // artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
-        artifact = "com.google.protobuf:protoc:3.25.4"
+        artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
     }
     plugins {
         id("grpc") {
             artifact = "io.grpc:protoc-gen-grpc-java:${rootProject.ext["grpcJavaVersion"]}"
         }
         id("krotoDC") {
-            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.1.1:jdk8@jar"
+            artifact = "io.github.mscheong01:protoc-gen-krotoDC:1.2.0:jdk8@jar"
         }
     }
     generateProtoTasks {
