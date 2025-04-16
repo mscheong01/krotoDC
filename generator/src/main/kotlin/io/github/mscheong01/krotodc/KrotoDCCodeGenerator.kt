@@ -16,23 +16,22 @@ package io.github.mscheong01.krotodc
 import com.google.protobuf.Descriptors
 import com.google.protobuf.compiler.PluginProtos
 import com.squareup.kotlinpoet.FileSpec
-import io.github.mscheong01.krotodc.specgenerators.FileSpecGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.ConverterGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.DataClassGenerator
 import io.github.mscheong01.krotodc.specgenerators.file.GrpcKrotoGenerator
 
 object KrotoDCCodeGenerator {
 
-    val subGenerators = listOf<FileSpecGenerator>(
+    val subGenerators = listOf(
         DataClassGenerator(),
         GrpcKrotoGenerator(),
-//        io.github.mscheong01.krotodc.subgenerators.WrappedStubGenerator(),
         ConverterGenerator()
     )
 
     fun generateCode(request: PluginProtos.CodeGeneratorRequest) {
         val fileNameToDescriptor = mutableMapOf<String, Descriptors.FileDescriptor>()
-        request.protoFileList.toList()
+        request.protoFileList
+            .toList()
             .forEach { file ->
                 val deps = file.dependencyList.map { dep ->
                     fileNameToDescriptor[dep]

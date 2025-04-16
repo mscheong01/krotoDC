@@ -4,14 +4,20 @@ repositories {
     maven {
         url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
+    mavenLocal()
 }
 
 dependencies {
 //    implementation(kotlin("stdlib"))
 //    implementation("io.grpc:grpc-protobuf:${rootProject.ext["grpcJavaVersion"]}")
     // https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
-    implementation("com.google.protobuf:protobuf-java:${rootProject.ext["protobufVersion"]}")
-    implementation("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
+
+    // TODO: update example protobuf dependency to 4+
+    // implementation("com.google.protobuf:protobuf-java:${rootProject.ext["protobufVersion"]}")
+    // implementation("com.google.protobuf:protobuf-java-util:${rootProject.ext["protobufVersion"]}")
+    implementation("com.google.protobuf:protobuf-java:3.25.4")
+    implementation("com.google.protobuf:protobuf-java-util:3.25.4")
+
     implementation("io.grpc:grpc-stub:${rootProject.ext["grpcJavaVersion"]}")
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
@@ -30,7 +36,8 @@ dependencies {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
+        // artifact = "com.google.protobuf:protoc:${rootProject.ext["protobufVersion"]}"
+        artifact = "com.google.protobuf:protoc:3.25.4"
     }
     plugins {
         id("grpc") {

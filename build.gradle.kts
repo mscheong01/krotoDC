@@ -11,9 +11,9 @@ if (project.hasProperty("releaseVersion")) {
     version = project.property("releaseVersion") as String
 }
 
-ext["grpcJavaVersion"] = "1.66.0"
-ext["grpcKotlinVersion"] = "1.4.1"
-ext["protobufVersion"] = "3.25.4"
+ext["grpcJavaVersion"] = "1.70.0"
+ext["grpcKotlinVersion"] = "1.4.0"
+ext["protobufVersion"] = "4.30.1"
 ext["coroutinesVersion"] = "1.8.1"
 ext["kotlinPoetVersion"] = "1.18.1"
 
