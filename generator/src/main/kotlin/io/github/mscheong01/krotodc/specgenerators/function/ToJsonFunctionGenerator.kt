@@ -15,6 +15,7 @@ package io.github.mscheong01.krotodc.specgenerators.function
 
 import com.google.protobuf.Descriptors.Descriptor
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterSpec
 import io.github.mscheong01.krotodc.import.FunSpecsWithImports
 import io.github.mscheong01.krotodc.import.Import
 import io.github.mscheong01.krotodc.specgenerators.FunSpecGenerator
@@ -26,8 +27,23 @@ class ToJsonFunctionGenerator : FunSpecGenerator<Descriptor> {
         val generatedType = descriptor.krotoDCTypeName
         val functionBuilder = FunSpec.builder("toJson")
             .receiver(generatedType)
+            .addParameter(
+                ParameterSpec.builder("includeDefaultValues", Boolean::class)
+                    .defaultValue("%L", false)
+                    .build()
+            )
             .returns(String::class)
-        functionBuilder.addCode("return JsonFormat.printer().print(this@toJson.toProto())")
+        functionBuilder.addCode(
+            """
+                return JsonFormat.printer().let { defaultPrinter ->
+                        var printer = defaultPrinter
+                        if (includeDefaultValues) {
+                            printer = printer.alwaysPrintFieldsWithNoPresence().omittingInsignificantWhitespace()
+                        }
+                        printer
+                }.print(this@toJson.toProto())
+            """.trimIndent()
+        )
         imports.add(Import("com.google.protobuf.util", listOf("JsonFormat")))
         return FunSpecsWithImports(
             listOf(functionBuilder.build()),
