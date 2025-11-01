@@ -13,6 +13,9 @@
 // limitations under the License.
 package io.github.mscheong01.krotodc
 
+import com.example.defaultvaluestest.krotodc.DefaultValueNestedMessage
+import com.example.defaultvaluestest.krotodc.DefaultValueTest
+import com.example.defaultvaluestest.krotodc.defaultvaluetest.toJson
 import io.github.mscheong01.test.Person
 import io.github.mscheong01.test.krotodc.person.fromJson
 import io.github.mscheong01.test.krotodc.person.toDataClass
@@ -35,5 +38,21 @@ class JsonConverterTest {
         )
         val deserializedDataClass = io.github.mscheong01.test.krotodc.Person.fromJson(json)
         Assertions.assertThat(dataClass).isEqualTo(deserializedDataClass)
+    }
+
+    @Test
+    fun `test including default values in toJson call`() {
+        val proto = DefaultValueTest(
+            intField = 0,
+            stringList = emptyList(),
+            defaultValueNestedMessage = DefaultValueNestedMessage(
+                doubleField = 31.08,
+                booleanField = false,
+            )
+        )
+        val json = proto.toJson(includeDefaultValues = true)
+        Assertions.assertThat(json).isEqualTo(
+            "{\"intField\":0,\"stringList\":[],\"defaultValueNestedMessage\":{\"doubleField\":31.08,\"booleanField\":false}}"
+        )
     }
 }
