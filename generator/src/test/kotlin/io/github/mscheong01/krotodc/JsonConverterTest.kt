@@ -47,7 +47,7 @@ class JsonConverterTest {
             stringList = emptyList(),
             defaultValueNestedMessage = DefaultValueNestedMessage(
                 doubleField = 31.08,
-                booleanField = false,
+                booleanField = false
             )
         )
         val json = proto.toJson(includeDefaultValues = true)
