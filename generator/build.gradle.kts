@@ -69,6 +69,8 @@ tasks.jar {
     from(runtimeClasspathJars.map { zipTree(it) })
 
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    archiveClassifier = "jdk8"
 }
 
 protobuf {
