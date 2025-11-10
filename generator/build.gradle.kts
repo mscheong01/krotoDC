@@ -44,25 +44,33 @@ dependencies {
     testImplementation("io.grpc:grpc-testing:${rootProject.ext["grpcJavaVersion"]}")
 }
 
-publishing {
-    publications {
-        named<MavenPublication>("maven") {
-            pom {
-                name.set("krotoDC")
-                artifactId = "protoc-gen-krotoDC"
-                description.set(
-                    "protoc-gen-krotoDC is a protoc plugin for generating kotlin data classes and " +
-                        "grpc service/stub from a .proto input."
-                )
-            }
+configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = "protoc-gen-krotoDC",
+        version = project.version.toString()
+    )
+    
+    pom {
+        name.set("krotoDC")
+        description.set(
+            "protoc-gen-krotoDC is a protoc plugin for generating kotlin data classes and " +
+                "grpc service/stub from a .proto input."
+        )
+    }
+}
 
-            artifact(tasks.jar) {
-                classifier = "jdk8"
+afterEvaluate {
+    publishing {
+        publications {
+            withType<MavenPublication> {
+                artifact(tasks.jar) {
+                    classifier = "jdk8"
+                }
             }
         }
     }
 }
-
 tasks.jar {
     println(application.mainClass.get())
     manifest {

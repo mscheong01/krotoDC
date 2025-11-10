@@ -14,15 +14,15 @@ java {
     withJavadocJar()
 }
 
-publishing {
-    publications {
-        named<MavenPublication>("maven") {
-            from(components["java"])
-            pom {
-                name.set("krotoDC core library")
-                artifactId = "krotoDC-core"
-                description.set("provides runtime support for krotoDC generated code")
-            }
-        }
+configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = "krotoDC-core",
+        version = project.version.toString()
+    )
+    
+    pom {
+        name.set("krotoDC core library")
+        description.set("provides runtime support for krotoDC generated code")
     }
 }
