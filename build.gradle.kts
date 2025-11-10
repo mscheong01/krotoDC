@@ -42,14 +42,14 @@ subprojects {
     }
 
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            freeCompilerArgs = listOf("-Xjsr305=strict")
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        compilerOptions {
+            freeCompilerArgs.add("-Xjsr305=strict")
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
         }
     }
 
     configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
-        publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+        publishToMavenCentral()
 
         // Release 버전만 서명 (snapshot은 서명 안 함)
         if (project.hasProperty("releaseVersion")) {
@@ -102,7 +102,7 @@ subprojects {
     }
 }
 
-tasks.create("updateVersion") {
+tasks.register("updateVersion") {
     if (rootProject.hasProperty("next")) {
         val file = File(rootProject.rootDir, "gradle.properties")
         val prop = java.util.Properties().apply { load(java.io.FileInputStream(file)) }
