@@ -1,5 +1,4 @@
 name: Publish Release
-
 on:
   release:
     types: [ published ]
@@ -7,36 +6,35 @@ on:
   workflow_dispatch:
 
 env:
-  MAVEN_USERNAME: ${{ secrets.MAVEN_USERNAME }}
-  MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}
-  ORG_GRADLE_PROJECT_signingKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
-  ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
+  MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+  MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.PAT }}
-
+          
       - name: Get Previous tag
         id: previous_tag
         uses: WyriHaximus/github-action-get-previous-tag@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+          
       - name: Get next minor version
         id: semvers
         uses: WyriHaximus/github-action-next-semvers@v1
         with:
           version: ${{ steps.previous_tag.outputs.tag }}
-
-      - name: print semver
+          
+      - name: Print semver
         id: print_semver
         run: |
           echo "current: $CURRENT"
@@ -44,25 +42,33 @@ jobs:
         env:
           CURRENT: ${{ steps.previous_tag.outputs.tag }}
           NEXT: ${{ steps.semvers.outputs.minor }}
-
-      - name: Setup AdoptOpenJDK
+          
+      - name: Setup JDK
         uses: joschi/setup-jdk@v2
         with:
           java-version: '17'
-
-      - name: Sign and publish with Gradle
+          
+      - name: Test
         working-directory: ./
-        run: ./gradlew sign test publish -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
-
+        run: ./gradlew test -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
+        
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v2
-        if: always() # always run even if the previous step fails
+        if: always()
         with:
           report_paths: '**/build/test-results/test/TEST-*.xml'
-
+          
+      - name: Publish to Maven Central
+        working-directory: ./
+        run: ./gradlew publishToMavenCentral --no-configuration-cache -PreleaseVersion=${{ steps.previous_tag.outputs.tag }}
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          
       - name: Update library version
         working-directory: ./
         run: ./gradlew updateVersion -Pnext=${{ steps.semvers.outputs.minor }}-SNAPSHOT
+        
       - name: Commit gradle.properties with updated library version
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
@@ -70,9 +76,9 @@ jobs:
           file_pattern: gradle.properties
           branch: main
           commit_user_name: version-control-bot
-          commit_user_email: version-control-botr@users.noreply.github.com
+          commit_user_email: version-control-bot@users.noreply.github.com
           commit_author: version-control-bot <version-control-bot@users.noreply.github.com>
-
+          
       - name: Create new milestone
         id: create_milestone
         uses: WyriHaximus/github-action-create-milestone@v1
