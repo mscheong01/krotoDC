@@ -7,6 +7,8 @@ dependencies {
     implementation("io.grpc:grpc-stub:${rootProject.ext["grpcJavaVersion"]}")
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 java {
