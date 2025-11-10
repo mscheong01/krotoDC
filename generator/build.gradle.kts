@@ -61,17 +61,6 @@ configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
     }
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            withType<MavenPublication> {
-                artifact(tasks.jar) {
-                    classifier = "jdk8"
-                }
-            }
-        }
-    }
-}
 tasks.jar {
     println(application.mainClass.get())
     manifest {
