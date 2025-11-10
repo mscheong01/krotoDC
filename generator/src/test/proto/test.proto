@@ -107,3 +107,8 @@ message DeprecatedMessage {
     Person oneof_person = 4;
   }
 }
+
+message RecursiveMessage {
+  int32 depth = 1;
+  RecursiveMessage next = 2;
+}

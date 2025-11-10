@@ -18,17 +18,7 @@ import com.google.protobuf.ByteString
 import io.github.mscheong01.importtest.ImportFromOtherFileTest.ImportTestMessage
 import io.github.mscheong01.importtest.krotodc.importtestmessage.toDataClass
 import io.github.mscheong01.importtest.krotodc.importtestmessage.toProto
-import io.github.mscheong01.test.DeprecatedMessage
-import io.github.mscheong01.test.Employee
-import io.github.mscheong01.test.EmptyMessage
-import io.github.mscheong01.test.Job
-import io.github.mscheong01.test.MapMessage
-import io.github.mscheong01.test.OneOfMessage
-import io.github.mscheong01.test.OptionalMessage
-import io.github.mscheong01.test.Person
-import io.github.mscheong01.test.PrimitiveMessage
-import io.github.mscheong01.test.RepeatedMessage
-import io.github.mscheong01.test.TopLevelMessage
+import io.github.mscheong01.test.*
 import io.github.mscheong01.test.krotodc.deprecatedmessage.toDataClass
 import io.github.mscheong01.test.krotodc.employee.toDataClass
 import io.github.mscheong01.test.krotodc.employee.toProto
@@ -44,6 +34,7 @@ import io.github.mscheong01.test.krotodc.person.toDataClass
 import io.github.mscheong01.test.krotodc.person.toProto
 import io.github.mscheong01.test.krotodc.primitivemessage.toDataClass
 import io.github.mscheong01.test.krotodc.primitivemessage.toProto
+import io.github.mscheong01.test.krotodc.recursivemessage.toDataClass
 import io.github.mscheong01.test.krotodc.repeatedmessage.toDataClass
 import io.github.mscheong01.test.krotodc.repeatedmessage.toProto
 import io.github.mscheong01.test.krotodc.toplevelmessage.toDataClass
@@ -294,7 +285,9 @@ class ConversionTest {
         val proto = ImportTestMessage.newBuilder()
             .setImportedNestedMessage(TopLevelMessage.NestedMessage.newBuilder().setName("test").build())
             .setImportedPerson(Person.newBuilder().setName("John").setAge(30).build())
-            .setImportedSimpleMessage(OuterClassNameTestProto.SimpleMessage.newBuilder().setName("test").build())
+            .setImportedSimpleMessage(
+                OuterClassNameTestProto.SimpleMessage.newBuilder().setName("test").build()
+            )
             .build()
         val kroto = proto.toDataClass()
         Assertions.assertThat(kroto.importedNestedMessage).isEqualTo(
@@ -305,5 +298,38 @@ class ConversionTest {
         )
         val proto2 = kroto.toProto()
         Assertions.assertThat(proto2).isEqualTo(proto)
+    }
+
+    @Test
+    fun `test message with recursive field`() {
+        val noDepth = RecursiveMessage.newBuilder()
+            .setDepth(1)
+            .build()
+
+        val krotoNoDepth = noDepth.toDataClass()
+        Assertions.assertThat(krotoNoDepth.depth).isEqualTo(1)
+        Assertions.assertThat(krotoNoDepth.next).isNull()
+
+        val someDepth = RecursiveMessage.newBuilder()
+            .setDepth(1)
+            .setNext(
+                RecursiveMessage.newBuilder()
+                    .setDepth(2)
+                    .setNext(
+                        RecursiveMessage.newBuilder()
+                            .setDepth(3)
+                            .build()
+                    )
+                    .build()
+            )
+            .build()
+
+        val krotoSomeDepth = someDepth.toDataClass()
+        Assertions.assertThat(krotoSomeDepth.depth).isEqualTo(1)
+        Assertions.assertThat(krotoSomeDepth.next).isNotNull()
+        Assertions.assertThat(krotoSomeDepth.next.depth).isEqualTo(2)
+        Assertions.assertThat(krotoSomeDepth.next.next).isNotNull()
+        Assertions.assertThat(krotoSomeDepth.next.depth).isEqualTo(3)
+        Assertions.assertThat(krotoSomeDepth.next.next.next).isNull()
     }
 }
