@@ -20,7 +20,7 @@ configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
         artifactId = "krotoDC-core",
         version = project.version.toString()
     )
-    
+
     pom {
         name.set("krotoDC core library")
         description.set("provides runtime support for krotoDC generated code")

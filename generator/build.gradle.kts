@@ -50,7 +50,7 @@ configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
         artifactId = "protoc-gen-krotoDC",
         version = project.version.toString()
     )
-    
+
     pom {
         name.set("krotoDC")
         description.set(
