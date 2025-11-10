@@ -38,31 +38,40 @@ dependencies {
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     // https://mvnrepository.com/artifact/org.assertj/assertj-core
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation("io.grpc:grpc-inprocess:${rootProject.ext["grpcJavaVersion"]}")
     testImplementation("io.grpc:grpc-testing:${rootProject.ext["grpcJavaVersion"]}")
 }
 
-publishing {
-    publications {
-        named<MavenPublication>("maven") {
-            pom {
-                name.set("krotoDC")
-                artifactId = "protoc-gen-krotoDC"
-                description.set(
-                    "protoc-gen-krotoDC is a protoc plugin for generating kotlin data classes and " +
-                        "grpc service/stub from a .proto input."
-                )
-            }
+configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = "protoc-gen-krotoDC",
+        version = project.version.toString()
+    )
 
-            artifact(tasks.jar) {
-                classifier = "jdk8"
+    pom {
+        name.set("krotoDC")
+        description.set(
+            "protoc-gen-krotoDC is a protoc plugin for generating kotlin data classes and " +
+                "grpc service/stub from a .proto input."
+        )
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            withType<MavenPublication> {
+                artifact(tasks.jar) {
+                    classifier = "jdk8"
+                }
             }
         }
     }
 }
-
 tasks.jar {
     println(application.mainClass.get())
     manifest {

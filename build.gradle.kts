@@ -1,9 +1,8 @@
 plugins {
     kotlin("jvm") version "2.0.20" apply false
     id("com.google.protobuf") version "0.9.4" apply false
-    `maven-publish`
+    id("com.vanniktech.maven.publish") version "0.30.0" apply false
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
-    signing
 }
 
 group = "io.github.mscheong01"
@@ -26,9 +25,8 @@ subprojects {
         plugin("java")
         plugin("org.jetbrains.kotlin.jvm")
         plugin("com.google.protobuf")
-        plugin("maven-publish")
+        plugin("com.vanniktech.maven.publish")
         plugin("org.jlleitschuh.gradle.ktlint")
-        plugin("signing")
     }
 
     group = rootProject.group
@@ -50,53 +48,47 @@ subprojects {
         }
     }
 
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                pom {
-                    url.set("https://github.com/mscheong01/krotoDC")
-                    licenses {
-                        license {
-                            name.set("Apache 2.0")
-                            url.set("https://opensource.org/licenses/Apache-2.0")
-                            distribution.set("repo")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("mscheong01")
-                            name.set("Minsoo Cheong")
-                            email.set("icycle0409@snu.ac.kr")
-                            organization.set("MinsooCheong")
-                            organizationUrl.set("https://github.com/mscheong01")
-                        }
-                    }
-                    scm {
-                        connection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
-                        developerConnection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
-                        url.set("https://github.com/mscheong01/krotoDC")
-                    }
-                }
-            }
-        }
-        repositories {
-            maven {
-                name = "OSSRH"
-                url = if ((version as String).endsWith("-SNAPSHOT")) {
-                    uri("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                } else {
-                    uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-                }
-                credentials {
-                    username = System.getenv("MAVEN_USERNAME")
-                    password = System.getenv("MAVEN_PASSWORD")
-                }
-            }
+    configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+        publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+
+        // Release 버전만 서명 (snapshot은 서명 안 함)
+        if (project.hasProperty("releaseVersion")) {
+            signAllPublications()
         }
 
-        tasks.withType<Test> {
-            useJUnitPlatform()
+        pom {
+            name.set(project.name)
+            description.set("Kotlin gRPC DataClass serialization library")
+            url.set("https://github.com/mscheong01/krotoDC")
+
+            licenses {
+                license {
+                    name.set("Apache 2.0")
+                    url.set("https://opensource.org/licenses/Apache-2.0")
+                    distribution.set("repo")
+                }
+            }
+
+            developers {
+                developer {
+                    id.set("mscheong01")
+                    name.set("Minsoo Cheong")
+                    email.set("icycle0409@snu.ac.kr")
+                    organization.set("MinsooCheong")
+                    organizationUrl.set("https://github.com/mscheong01")
+                }
+            }
+
+            scm {
+                connection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
+                developerConnection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
+                url.set("https://github.com/mscheong01/krotoDC")
+            }
         }
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 
     configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
@@ -106,19 +98,6 @@ subprojects {
                     entry.file.toString().contains("generated")
                 }
             }
-        }
-    }
-
-    signing {
-        val signingKey: String? by project
-        val signingPassword: String? by project
-        useInMemoryPgpKeys(signingKey, signingPassword)
-        sign(publishing.publications["maven"])
-    }
-
-    tasks.withType<Sign>().configureEach {
-        onlyIf {
-            project.hasProperty("releaseVersion")
         }
     }
 }

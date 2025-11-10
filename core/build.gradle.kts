@@ -7,6 +7,8 @@ dependencies {
     implementation("io.grpc:grpc-stub:${rootProject.ext["grpcJavaVersion"]}")
     implementation("io.grpc:grpc-kotlin-stub:${rootProject.ext["grpcKotlinVersion"]}")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${rootProject.ext["coroutinesVersion"]}")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
 }
 
 java {
@@ -14,15 +16,15 @@ java {
     withJavadocJar()
 }
 
-publishing {
-    publications {
-        named<MavenPublication>("maven") {
-            from(components["java"])
-            pom {
-                name.set("krotoDC core library")
-                artifactId = "krotoDC-core"
-                description.set("provides runtime support for krotoDC generated code")
-            }
-        }
+configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
+    coordinates(
+        groupId = project.group.toString(),
+        artifactId = "krotoDC-core",
+        version = project.version.toString()
+    )
+
+    pom {
+        name.set("krotoDC core library")
+        description.set("provides runtime support for krotoDC generated code")
     }
 }
