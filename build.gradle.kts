@@ -50,17 +50,17 @@ subprojects {
 
     configure<com.vanniktech.maven.publish.MavenPublishBaseExtension> {
         publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
-        
+
         // Release 버전만 서명 (snapshot은 서명 안 함)
         if (project.hasProperty("releaseVersion")) {
             signAllPublications()
         }
-        
+
         pom {
             name.set(project.name)
             description.set("Kotlin gRPC DataClass serialization library")
             url.set("https://github.com/mscheong01/krotoDC")
-            
+
             licenses {
                 license {
                     name.set("Apache 2.0")
@@ -68,7 +68,7 @@ subprojects {
                     distribution.set("repo")
                 }
             }
-            
+
             developers {
                 developer {
                     id.set("mscheong01")
@@ -78,7 +78,7 @@ subprojects {
                     organizationUrl.set("https://github.com/mscheong01")
                 }
             }
-            
+
             scm {
                 connection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
                 developerConnection.set("scm:git:git@github.com:mscheong01/krotoDC.git")
