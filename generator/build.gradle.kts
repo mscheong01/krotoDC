@@ -4,10 +4,6 @@ plugins {
     application
 }
 
-java {
-    withJavadocJar()
-}
-
 application {
     mainClass.set("io.github.mscheong01.krotodc.MainExecutor")
 }
